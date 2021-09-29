@@ -13,12 +13,12 @@ const CharacterDetailView = () => {
     // const apiUrl2 = 'https://gateway.marvel.com:443/v1/public/characters?ts=35&apikey=9e388ca2a7369beba8961e77512c7424&hash=cf5cf23a61ba45d6661053f6344efe78';
     
     useEffect(() => {
-        console.log(apiUrl1);
-        axios.get(apiUrl1).then( (response) => {
-            setChar(response.data);
-            console.log(char.data.results[0]);
+        axios.get(apiUrl1)
+            .then( (response) => {
+                setChar(response.data.data.results[0]);
             }).catch(error => console.log(error));
-        }, []);
+        }, 
+        []);        
 
     // const dataArray = data.data.results;    
     // console.log(dataArray);
@@ -39,17 +39,17 @@ const CharacterDetailView = () => {
                 </div>
             </div> */}
 
-            {/* <div className="container">
+            <div className="container">
                 <div className="row">
                     <div className="col-4">
-                        <img src={char.data.data.results[0].thumbnail.path+'.'+char.data.data.results[0].thumbnail.extension} className="img-thumbnail" alt=""></img>
+                        {/* <img src={char.thumbnail.path+'.'+char.thumbnail.extension} className="img-thumbnail" alt=""></img> */}
                     </div>
                     <div className="col-8">
-                        <h3>{char.data.data.results[0].name}</h3>
-                        <p className="text-start">{char.data.data.results[0].description}</p>
+                        <h3>{char.name}</h3>
+                        <p className="text-start">{char.description}</p>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </>
         
 
