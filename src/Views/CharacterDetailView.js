@@ -70,7 +70,7 @@ const CharacterDetailView = () => {
 
                             {
                                 charStories.map((story) => {
-                                    return <span className="badge rounded-pill bg-primary m-1" key={story.id}>{story.name}</span>
+                                    return <span className="badge rounded-pill bg-primary m-1" key={story.name}>{story.name}</span>
                                 })
                             }
 
