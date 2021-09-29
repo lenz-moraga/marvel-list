@@ -6,16 +6,19 @@ const Button = (props) => {
 
     if (props.type === 'character') {
         buttonType = '/character/'+props.values.id;
+
+        // return (
+            // <a href={props.values.urls[1].url} title={props.values.urls[1].type} onClick={onClickCharbutton} target="_blank" rel="noreferrer" className="btn btn-primary">Learn More</a>
+        //     <Link to={buttonType} params={{ objeto: charDetail }} onClick={getResponse} rel="noreferrer" className="btn btn-primary">Learn More</Link>
+        // );
+        
     } else { 
         console.log('no info found');
     }
 
-    const onClickCharbutton = () => {
-        console.log(buttonType);
-    }
     return (
         // <a href={props.values.urls[1].url} title={props.values.urls[1].type} onClick={onClickCharbutton} target="_blank" rel="noreferrer" className="btn btn-primary">Learn More</a>
-        <Link to={buttonType} onClick={onClickCharbutton} rel="noreferrer" className="btn btn-primary">Learn More</Link>
+        <Link to={buttonType} rel="noreferrer" className="btn btn-primary">Learn More</Link>
     );
 }
 

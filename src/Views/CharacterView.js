@@ -3,6 +3,7 @@
 
 import React from "react";
 import Cards from '../Components/Cards/Cards';
+import SearchBar from "../Components/SearchBar";
 
 import data from '../Jsons/AllCharacters.json';
 
@@ -19,10 +20,12 @@ const CharacterView = () => {
 //     axios.get(apiUrl2).then(res => {
 //       setCharacters(res.data.data.results);  
 //     }).catch(error => console.log(error));
-//   });
+//   }, []);
 
     return (
         <>
+            <SearchBar />
+            
             <h2>Characters View</h2>
         
             <div className="row row-cols-1 row-cols-md-3 g-4">
