@@ -1,9 +1,9 @@
 import React from "react";
-import CardBody from './CardsBody/CardBody';
+import CardBody from './CardBody';
 
 const Cards = (props) => {
     const charObject = props.values;
-    const buttonFrom = props.from;
+    const buttonFrom = props.values.from;
 
     return (
         <>

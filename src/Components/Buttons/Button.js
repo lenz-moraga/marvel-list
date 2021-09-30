@@ -2,23 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Button = (props) => {  
-    let buttonType = props.type;
+    let buttonUrl = props.buttonType;
 
-    if (props.type === 'character') {
-        buttonType = '/character/'+props.values.id;
-
-        // return (
-            // <a href={props.values.urls[1].url} title={props.values.urls[1].type} onClick={onClickCharbutton} target="_blank" rel="noreferrer" className="btn btn-primary">Learn More</a>
-        //     <Link to={buttonType} params={{ objeto: charDetail }} onClick={getResponse} rel="noreferrer" className="btn btn-primary">Learn More</Link>
-        // );
-        
-    } else { 
-        console.log('no info found');
-    }
+    if (props.buttonType === 'characterView') {
+        buttonUrl = '/characters/'+props.values.id; 
+    } else if (props.buttonType === 'comicView') {
+        buttonUrl = '/comics/'+props.values.id; 
+    } else if (props.buttonType === 'comicViewAll') {
+        buttonUrl = '/comics';
+    } else if (props.buttonType === 'characterViewAll') {
+        buttonUrl = '/characters';
+    } else if (props.buttonType === 'search') {        
+        if(props.searchParameterProp === '') {
+            buttonUrl = '/home';
+        } else {
+            buttonUrl = '/search/'+props.searchParameterProp;
+        }
+    }    
 
     return (
         // <a href={props.values.urls[1].url} title={props.values.urls[1].type} onClick={onClickCharbutton} target="_blank" rel="noreferrer" className="btn btn-primary">Learn More</a>
-        <Link to={buttonType} rel="noreferrer" className="btn btn-primary">Learn More</Link>
+        <Link to={buttonUrl} rel="noreferrer" className={props.cssClasses} type={props.isSubmit}>{props.value}</Link>
     );
 }
 

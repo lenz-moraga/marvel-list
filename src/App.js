@@ -1,9 +1,13 @@
 import './App.css';
 import {Route, Switch, Redirect} from 'react-router-dom';
+
 import HomeView from './Views/HomeView';
 import CharacterView from './Views/CharacterView';
-import Navbar from './Components/Navbar';
+import ComicsView from './Views/ComicsView';
+import SearchResults from './Views/SearchResults';
 import CharacterDetailView from './Views/CharacterDetailView';
+
+import Navbar from './Components/Sections/Navbar';
 
 function App() {  
 
@@ -18,11 +22,17 @@ function App() {
         <Route path='/home' > 
           <HomeView />
         </Route>
-        <Route path='/characters'>
+        <Route path='/characters' exact>
           <CharacterView />
         </Route>
-        <Route path='/character/:charId'>
+        <Route path='/characters/:charId'>
           <CharacterDetailView/>
+        </Route>
+        <Route path='/search/:searchparam'>
+          <SearchResults/>
+        </Route>
+        <Route path='/comics' exact>
+          <ComicsView />
         </Route>
       </Switch>
 
