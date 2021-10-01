@@ -9,11 +9,9 @@ const HomeView = () => {
   return (
     <>
         <SearchBar />
-
-        <h2 className="my-4">Home View</h2>
         
-        <HomeSection sectionType="charactersSection" buttonType="characterViewAll" viewMoreValue="View More Characters"/>
-        <HomeSection sectionType="comicsSection" buttonType="comicViewAll" viewMoreValue="View More Comics"/>
+        <HomeSection sectionType="charactersSection" buttonType="characterViewAll" viewMoreValue="Characters"/>
+        <HomeSection sectionType="comicsSection" buttonType="comicViewAll" viewMoreValue="Comics"/>
     </>
   );
 }

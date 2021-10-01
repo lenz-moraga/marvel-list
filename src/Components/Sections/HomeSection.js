@@ -58,10 +58,11 @@ const HomeSection = (props) => {
     }, [props.sectionType]);
 
     return (
-        <>
+        <>  
+            <h2 className="my-4">{props.viewMoreValue}</h2>
             <div className="row row-cols-1 row-cols-md-3 g-4">
                 {
-                    cardInformation.slice(0,3).map( char => (
+                    cardInformation.slice(0,6).map( char => (
                         <Cards values={char} key={char.id}/>
                     ))
                 }
@@ -73,7 +74,7 @@ const HomeSection = (props) => {
                     // script to pull from the json default file, if the Response request limit is reached
                 } */}
 
-                <Button buttonType={props.buttonType} value={props.viewMoreValue} cssClasses="btn btn-primary mx-auto mt-3 mb-5"/>
+                <Button buttonType={props.buttonType} value={'View More '+props.viewMoreValue} cssClasses="btn btn-primary mx-auto mt-3 mb-5"/>
             </div>
         </>
     );

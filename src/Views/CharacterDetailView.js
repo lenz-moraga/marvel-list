@@ -36,9 +36,7 @@ const CharacterDetailView = () => {
 
     return (
         <>
-            <SearchBar />
-
-            <h2 className="my-4">Character Detail View</h2>
+            <SearchBar/>
 
             {/* <div className="container">
             <div className="row">
@@ -52,7 +50,7 @@ const CharacterDetailView = () => {
             </div>
         </div> */}
 
-            <div className="container">
+            <div className="container my-4">
                 <div className="row">
                     <div className="col-4">
                         {
