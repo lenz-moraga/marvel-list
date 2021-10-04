@@ -14,11 +14,11 @@ const CardBody = (props) => {
     }
 
     return (
-        <div className="card-body">
-            <h5 className="card-title">{props.values.name}</h5>
+        <div className="card-body" style={{justifyContent:"space-between", display:"inline-flex", flexDirection:"column"}}>
+            <h5 className="card-title">{props.values.name.length > 30 ? (props.values.name).substring(0, 30) + "..." : props.values.name}</h5>
             <p className="card-text">{truncate(props.values.desc)}</p>
             
-            <Button values={charObject} buttonType={props.from} value="Learn More" cssClasses="btn btn-primary"/>
+            <Button values={charObject} buttonType={props.from} value="Learn More" cssClasses="btn btn-primary card-button"/>
         </div>
     );
 }

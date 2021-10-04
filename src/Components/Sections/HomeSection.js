@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 
 import Cards from '../Cards/Cards';
 import Button from '../Buttons/Button';
+import { useParams } from 'react-router';
 
 const HomeSection = (props) => {    
     const [cardInformation, setCardInformation] = useState([]);

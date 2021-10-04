@@ -74,7 +74,9 @@ const CharacterDetailView = () => {
 
                             {
                                 charStories.slice(0, 10).map((story) => {
-                                    return <span className="badge rounded-pill bg-primary m-1" key={story.name}>{story.name}</span>
+                                    return <span className="badge rounded-pill bg-primary m-1 p-2" key={story.name}>
+                                        <a className="text-light text-decoration-none" href={story.resourceURI} target="_blank" rel="noreferrer" > {story.name} </a>
+                                        </span>
                                 })
                             }
 

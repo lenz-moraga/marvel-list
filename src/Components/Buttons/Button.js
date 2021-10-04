@@ -14,15 +14,15 @@ const Button = (props) => {
         buttonUrl = '/characters';
     } else if (props.buttonType === 'search') {        
         if(props.searchParameterProp === '') {
-            buttonUrl = '/home';
+            buttonUrl = '#';
         } else {
-            buttonUrl = '/search/'+props.searchParameterProp;
+            buttonUrl = '/search/'+props.searchParameterProp.split('#').join('No. ');
         }
     }    
 
     return (
         // <a href={props.values.urls[1].url} title={props.values.urls[1].type} onClick={onClickCharbutton} target="_blank" rel="noreferrer" className="btn btn-primary">Learn More</a>
-        <Link to={buttonUrl} rel="noreferrer" className={props.cssClasses} type={props.isSubmit}>{props.value}</Link>
+        <Link to={buttonUrl} rel="noreferrer" className={props.cssClasses} type={props.isSubmit} >{props.value}</Link>
     );
 }
 
