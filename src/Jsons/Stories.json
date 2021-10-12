@@ -1,0 +1,110 @@
+{
+  "code": 200,
+  "status": "Ok",
+  "copyright": "© 2021 MARVEL",
+  "attributionText": "Data provided by Marvel. © 2021 MARVEL",
+  "attributionHTML": "<a href=\"http://marvel.com\">Data provided by Marvel. © 2021 MARVEL</a>",
+  "etag": "d8b3d950f3918fc65311a69ef012e55cf7eabf32",
+  "data": {
+    "offset": 0,
+    "limit": 20,
+    "total": 1,
+    "count": 1,
+    "results": [
+      {
+        "id": 13209,
+        "title": "Fantastic Four (1961) #384",
+        "description": "The plan of the recently teenaged Franklin Richards is revealed! He's come back from the future to destroy the person responsible for the end of the Fantastic Four. The only problem…that person happens to be The Invisible Woman, his own mother! Plus: meet the newest member of the Fantastic Four...Scott Lang, the Astonishing Ant-Man!",
+        "resourceURI": "http://gateway.marvel.com/v1/public/stories/13209",
+        "type": "cover",
+        "modified": "2018-04-06T12:19:56-0400",
+        "thumbnail": null,
+        "creators": {
+          "available": 3,
+          "collectionURI": "http://gateway.marvel.com/v1/public/stories/13209/creators",
+          "items": [
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/creators/2489",
+              "name": "Pat Garrahy",
+              "role": "editor"
+            },
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/creators/1282",
+              "name": "Ralph Macchio",
+              "role": "editor"
+            },
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/creators/261",
+              "name": "Paul Ryan",
+              "role": "penciller (cover)"
+            }
+          ],
+          "returned": 3
+        },
+        "characters": {
+          "available": 6,
+          "collectionURI": "http://gateway.marvel.com/v1/public/stories/13209/characters",
+          "items": [
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/characters/1010801",
+              "name": "Ant-Man (Scott Lang)"
+            },
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009299",
+              "name": "Fantastic Four"
+            },
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009356",
+              "name": "Human Torch"
+            },
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009366",
+              "name": "Invisible Woman"
+            },
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/characters/1010896",
+              "name": "Lyja"
+            },
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009662",
+              "name": "Thing"
+            }
+          ],
+          "returned": 6
+        },
+        "series": {
+          "available": 1,
+          "collectionURI": "http://gateway.marvel.com/v1/public/stories/13209/series",
+          "items": [
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/series/2121",
+              "name": "Fantastic Four (1961 - 1998)"
+            }
+          ],
+          "returned": 1
+        },
+        "comics": {
+          "available": 1,
+          "collectionURI": "http://gateway.marvel.com/v1/public/stories/13209/comics",
+          "items": [
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/comics/13210",
+              "name": "Fantastic Four (1961) #384"
+            }
+          ],
+          "returned": 1
+        },
+        "events": {
+          "available": 0,
+          "collectionURI": "http://gateway.marvel.com/v1/public/stories/13209/events",
+          "items": [],
+          "returned": 0
+        },
+        "originalIssue": {
+          "resourceURI": "http://gateway.marvel.com/v1/public/comics/13210",
+          "name": "Fantastic Four (1961) #384"
+        }
+      }
+    ]
+  }
+}

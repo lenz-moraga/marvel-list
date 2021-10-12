@@ -8,12 +8,14 @@ import SearchResults from './Views/SearchResults';
 import CharacterDetailView from './Views/CharacterDetailView';
 
 import Navbar from './Components/Sections/Navbar';
+import SearchBar from './Components/Sections/SearchBar';
 
 function App() {  
 
   return (
     <div className='App container'>
       <Navbar brand={'Marvel'}/>
+      <SearchBar />
 
       <Switch>
         <Route path='/' exact>
@@ -28,14 +30,13 @@ function App() {
         <Route path='/characters/:charId'>
           <CharacterDetailView/>
         </Route>
-        <Route path='/search/:searchparam'>
-          <SearchResults/>
-        </Route>
         <Route path='/comics' exact>
           <ComicsView />
         </Route>
+        <Route path='/search/:searchparam'>
+          <SearchResults/>
+        </Route>        
       </Switch>
-
     </div>
   );
 }

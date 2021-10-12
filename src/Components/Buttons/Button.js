@@ -16,7 +16,7 @@ const Button = (props) => {
         if(props.searchParameterProp === '') {
             buttonUrl = '#';
         } else {
-            buttonUrl = '/search/'+props.searchParameterProp.split('#').join('No. ');
+            buttonUrl = '/search/'+props.searchParameterProp.split('#').join('No.');
         }
     }    
 

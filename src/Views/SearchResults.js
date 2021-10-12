@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom"; 
 import axios from 'axios';
 import Cards from '../Components/Cards/Cards'
-import SearchBar from "../Components/Sections/SearchBar";
 
 const SearchResults = () => {
     const [CharacterCardInformation, setCharacterCardInformation] = useState([]);
@@ -12,20 +11,44 @@ const SearchResults = () => {
 
     const params = useParams();
 
-    // console.log(params.searchparam);
+    const getComicFilter = () => {
+        let comicStartName, year, issue;
+        let structuredComicUrl = '';
+        /*If the user is looking for a comic with the exact structure: name (year) #issue number, the app should make the following validations, if the user writes the complete structure, the if's will destructure the string.*/ 
+        
+        /*first, the name of the comic, if there are any parenthesis, it should get the text before them, else, the user might be looking for a character or making the search by just the name of the comic.*/
+        if (params.searchparam.lastIndexOf('(') > 1 ) {
+            comicStartName = params.searchparam.trim().substring(0, params.searchparam.lastIndexOf('('));
+            structuredComicUrl += comicStartName.trim();
+        } else {
+            structuredComicUrl += params.searchparam.trim();
+        }
+
+        /*if the user is using a more complete structure using the parenthesis and the year, we will get that year here. */
+        if ( params.searchparam.indexOf('(') > 0 ) {
+            year = params.searchparam.substring(params.searchparam.indexOf('(')+1, params.searchparam.lastIndexOf(')')); 
+            structuredComicUrl += '&startYear='+year;
+        }
+
+        /*for the issue number, we are replacing the # in the URL, so we can identify whether if the user is looking for the comin using the issue number or not*/
+        issue = params.searchparam.split('No.').join('#');
+        if ( issue.indexOf('#') > 0 ) {
+            structuredComicUrl += '&issueNumber='+issue.split('#')[1];
+        };
+
+        return (structuredComicUrl);
+    }
 
     const rootUrl = "https://gateway.marvel.com:443/v1/public/";
 
-    const characterSearch = 'characters?nameStartsWith='+params.searchparam.trim().split('No.').join('#')+'&';
-    const rootComicUrl = 'comics?titleStartsWith='+params.searchparam.trim().split(' No. ').join('%20%23')+'&';
-
-    console.log(rootComicUrl);
+    const characterSearch = 'characters?nameStartsWith='+params.searchparam.trim()+'&';
+    const comicSearch = 'comics?titleStartsWith='+ getComicFilter() +'&';
 
     const key1 = 'ts=35&apikey=9e388ca2a7369beba8961e77512c7424&hash=cf5cf23a61ba45d6661053f6344efe78';
     const key2 = 'ts=71&apikey=557c4a290d82f5c62dd430ce6d7b52a7&hash=f888c6636658ce15613721c842998aa9';
 
     const getCharactersUrl = rootUrl.concat(characterSearch).concat(key1);
-    const getComicsUrl = rootUrl.concat(rootComicUrl).concat(key2);
+    const getComicsUrl = rootUrl.concat(comicSearch).concat(key2);
 
     // First 20 characters              https://gateway.marvel.com:443/v1/public/characters?apikey=
 
@@ -65,6 +88,7 @@ const SearchResults = () => {
                     }
                 });
                 setCharacterCardInformation(transformedObject); 
+                setIsLoading(false);
 
         }).catch(error => console.log(error));
 
@@ -89,17 +113,13 @@ const SearchResults = () => {
 
     }, [getCharactersUrl, getComicsUrl]);
     
-    const WholeData = Object.values( CharacterCardInformation .concat(ComicsCardInformation) );    
+    const WholeData = Object.values( CharacterCardInformation.concat(ComicsCardInformation) );
 
     const renderCards = () => {
         return (
-            WholeData.map((val) => {
-                if( isLoading ) {
-                     return (
-                         <p key={val.id}>Loading...</p>
-                     );
-                 }
-                 return (
+            WholeData.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).map((val) => {
+                if( isLoading ) return <p key={val.id}>Loading...</p>;
+                return (
                      <Cards values={val} key={val.id} from="characterView"/>
                  );
              })
@@ -108,8 +128,6 @@ const SearchResults = () => {
        
     return (
         <>
-            <SearchBar />
-
             <div className="row row-cols-1 row-cols-md-3 g-4 mt-1 mb-2">
                 { renderCards() }
             </div>
