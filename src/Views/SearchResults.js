@@ -143,35 +143,68 @@ const SearchResults = () => {
   };
 
   const renderCards = () => {
+    if (wholeData.length === 0) return;
+    const { comics, characters } = wholeData.reduce((acc, curr) => {
+      let { comics, characters } = acc;
+      const dataType = curr.type;
+
+      switch (dataType) {
+        case "character":
+           characters = [ ...characters, curr];
+           break;
+        case "comic":
+           comics = [ ...comics, curr];
+           break;
+        default: 
+          break;
+      }
+      return { characters, comics };
+    }, {
+      comics: [],
+      characters: []
+    });
+
+    const finalData = [...characters, ...comics];
+
     return wholeData
-      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+      //.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
       .map((val) => {
         if (isLoading) return <p key={val.id}>Loading...</p>;
         return <Cards values={val} key={val.id} from="characterView" />;
       });
   };
 
+
+
   const renderFilters = () => {
-
-    return storiesList.map((val) => {
-      const id = val.resourceURI.split("/stories/")[1];
-
-      return (
-        <div className="form-check" key={id}>
-          <input
-            className="form-check-input"
-            name="filter"
-            type="radio"
-            value={id}
-            id={id}
-            onChange={onChangeStoryName}
-          />
-          <label className="form-check-label" htmlFor={id}>
-            {val.name}
-          </label>
-        </div>
-      );
+    const storiesUrls = storiesList.map((storiesUrl) => {
+      return storiesUrl.resourceURI;
     });
+
+    return storiesList
+      .filter(
+        (storiesArray, index) =>
+          storiesUrls.indexOf(storiesArray.resourceURI) === index
+      )
+      .map((val) => {
+        const id = val.resourceURI.split("/stories/")[1];
+
+        return (
+          <div className="form-check" key={id}>
+            <input
+              className="form-check-input"
+              name="filter"
+              type="radio"
+              value={id}
+              id={id}
+              onChange={onChangeStoryName}
+            />
+            <label className="form-check-label" htmlFor={id}>
+              {val.name}
+            </label>
+          </div>
+        );
+      });
   };
 
   return (
