@@ -52,11 +52,11 @@ const SearchResults = () => {
 
   const key1 =
     "ts=35&apikey=9e388ca2a7369beba8961e77512c7424&hash=cf5cf23a61ba45d6661053f6344efe78";
-  const key2 =
-    "ts=71&apikey=557c4a290d82f5c62dd430ce6d7b52a7&hash=f888c6636658ce15613721c842998aa9";
+  // const key2 =
+  //   "ts=71&apikey=557c4a290d82f5c62dd430ce6d7b52a7&hash=f888c6636658ce15613721c842998aa9";
 
-  const getCharactersUrl = rootUrl.concat(characterSearch).concat(key1);
-  const getComicsUrl = rootUrl.concat(comicSearch).concat(key2);
+  // const getCharactersUrl = rootUrl.concat(characterSearch).concat(key1);
+  // const getComicsUrl = rootUrl.concat(comicSearch).concat(key2);
 
   // First 20 characters              https://gateway.marvel.com:443/v1/public/characters?apikey=
 
@@ -80,10 +80,13 @@ const SearchResults = () => {
     setIsLoading(true);
 
     const storiePartialUrl = storyId ? `stories=${storyId}&` : "";
-    const url = `${rootUrl}${characterSearch}${storiePartialUrl}${key1}`;
-    const comicUrl = `${rootUrl}${comicSearch}${storiePartialUrl}${key1}`;
 
-    const characterRequest = axios.get(url);
+    const characterUrl = `${rootUrl}${characterSearch}${storiePartialUrl}orderBy=name&${key1}`;
+    const comicUrl = `${rootUrl}${comicSearch}${storiePartialUrl}orderBy=title&${key1}`;
+
+    console.log(comicUrl);
+
+    const characterRequest = axios.get(characterUrl);
     const comicsRequest = axios.get(comicUrl);
 
     Promise.all([characterRequest, comicsRequest])
@@ -123,7 +126,7 @@ const SearchResults = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [getCharactersUrl, characterSearch, comicSearch, getComicsUrl, storyId]);
+  }, [characterSearch, comicSearch, storyId]);
 
   useEffect(() => {
     if (storiesList.length > 0 || wholeData.length === 0) return;
@@ -143,28 +146,29 @@ const SearchResults = () => {
   };
 
   const renderCards = () => {
-    if (wholeData.length === 0) return;
-    const { comics, characters } = wholeData.reduce((acc, curr) => {
-      let { comics, characters } = acc;
-      const dataType = curr.type;
 
-      switch (dataType) {
-        case "character":
-           characters = [ ...characters, curr];
-           break;
-        case "comic":
-           comics = [ ...comics, curr];
-           break;
-        default: 
-          break;
-      }
-      return { characters, comics };
-    }, {
-      comics: [],
-      characters: []
-    });
+    // if (wholeData.length === 0) return;
+    // const { comics, characters } = wholeData.reduce((acc, curr) => {
+    //   let { comics, characters } = acc;
+    //   const dataType = curr.type;
 
-    const finalData = [...characters, ...comics];
+    //   switch (dataType) {
+    //     case "character":
+    //        characters = [ ...characters, curr];
+    //        break;
+    //     case "comic":
+    //        comics = [ ...comics, curr];
+    //        break;
+    //     default: 
+    //       break;
+    //   }
+    //   return { characters, comics };
+    // }, {
+    //   comics: [],
+    //   characters: []
+    // });
+
+    // const finalData = [...characters, ...comics];
 
     return wholeData
       //.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
