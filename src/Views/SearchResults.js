@@ -3,10 +3,16 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Cards from "../Components/Cards/Cards";
 
+import "./SearchResults.css";
+
 const SearchResults = () => {
   const [wholeData, setWholeData] = useState([]);
   const [storyId, setStoryId] = useState("");
+  const [comicId, setComicId] = useState("");
+  const [isChecked, setIsChecked] = useState(true);
+  const [searchType, setSearchType] = useState("");
   const [storiesList, setStoriesList] = useState([]);
+  const [comicsList, setComicsList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams();
@@ -46,45 +52,29 @@ const SearchResults = () => {
 
   const rootUrl = "https://gateway.marvel.com:443/v1/public/";
 
-  const characterSearch =
-    "characters?nameStartsWith=" + params.searchparam.trim() + "&";
-  const comicSearch = "comics?titleStartsWith=" + getComicFilter() + "&";
+  const searchParameter = params.searchparam.trim();
+  const characterSearch = isNaN(searchParameter)
+    ? `characters?nameStartsWith=${searchParameter}&`
+    : `characters/${searchParameter}?`;
+  const comicSearch = `comics?titleStartsWith=${getComicFilter()}&`;
 
   const key1 =
     "ts=35&apikey=9e388ca2a7369beba8961e77512c7424&hash=cf5cf23a61ba45d6661053f6344efe78";
-  // const key2 =
-  //   "ts=71&apikey=557c4a290d82f5c62dd430ce6d7b52a7&hash=f888c6636658ce15613721c842998aa9";
-
-  // const getCharactersUrl = rootUrl.concat(characterSearch).concat(key1);
-  // const getComicsUrl = rootUrl.concat(comicSearch).concat(key2);
-
-  // First 20 characters              https://gateway.marvel.com:443/v1/public/characters?apikey=
-
-  // Filter characters by name.       https://gateway.marvel.com:443/v1/public/characters?name=iron%20man&apikey=
-  // Filter characters by comics.     https://gateway.marvel.com:443/v1/public/characters?comics= 331
-  // Character's comics.              https://gateway.marvel.com:443/v1/public/characters/1009368/comics?apikey=
-  // All characters with that id      https://gateway.marvel.com:443/v1/public/characters/1009368?apikey=
-
-  // First 20 comics                  https://gateway.marvel.com:443/v1/public/comics?apikey=
-
-  // Filter by format.                https://gateway.marvel.com:443/v1/public/comics?format=hardcover&apikey=
-  // Filter by title.                 https://gateway.marvel.com:443/v1/public/comics?title=The%20Hunted%20Part%205&apikey=
-  // Filter by issue number.          https://gateway.marvel.com:443/v1/public/comics?issueNumber=54&apikey=
-  // Comic's characters.              https://gateway.marvel.com:443/v1/public/comics?characters=Iron%20Man&apikey=
-  // Stories comics.                  https://gateway.marvel.com:443/v1/public/comics?stories=331&apikey=
-
-  // const getCharactersUrl = 'https://gateway.marvel.com:443/v1/public/characters?ts=35&apikey=9e388ca2a7369beba8961e77512c7424&hash=cf5cf23a61ba45d6661053f6344efe78';
-  // const getComicsUrl = "https://gateway.marvel.com:443/v1/public/comics?ts=71&apikey=557c4a290d82f5c62dd430ce6d7b52a7&hash=f888c6636658ce15613721c842998aa9";
 
   useEffect(() => {
     setIsLoading(true);
 
     const storiePartialUrl = storyId ? `stories=${storyId}&` : "";
+    const comicPartialUrl = comicId ? `comics=${comicId}&` : "";
 
-    const characterUrl = `${rootUrl}${characterSearch}${storiePartialUrl}orderBy=name&${key1}`;
-    const comicUrl = `${rootUrl}${comicSearch}${storiePartialUrl}orderBy=title&${key1}`;
+    const characterUrl = `${rootUrl}${characterSearch}${comicPartialUrl}${storiePartialUrl}${key1}`;
 
-    console.log(comicUrl);
+    let comicUrl;
+    if (searchType === 'comic' && comicId) {
+      comicUrl = `${rootUrl}comics/${comicId}?${key1}`;
+    } else {
+      comicUrl = `${rootUrl}${comicSearch}${storiePartialUrl}${key1}`;
+    }
 
     const characterRequest = axios.get(characterUrl);
     const comicsRequest = axios.get(comicUrl);
@@ -98,6 +88,7 @@ const SearchResults = () => {
               id: cardData.id,
               name: cardData.name,
               desc: cardData.description,
+              characterComics: cardData.comics,
               stories: cardData.stories,
               thumbnail: cardData.thumbnail,
               url: cardData.urls,
@@ -118,6 +109,7 @@ const SearchResults = () => {
             type: "comic",
           };
         });
+
         setWholeData([...charactersObject, ...comicsObject]);
       })
       .catch((error) => {
@@ -126,61 +118,53 @@ const SearchResults = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [characterSearch, comicSearch, storyId]);
+  }, [characterSearch, comicSearch, storyId, comicId, searchType]);
 
   useEffect(() => {
-    if (storiesList.length > 0 || wholeData.length === 0) return;
+    if (wholeData.length === 0) return;
 
     const storiesListFound = wholeData.reduce((acc, curr) => {
       const currStories = curr?.stories?.items || [];
       return [...acc, ...currStories];
     }, []);
     setStoriesList(storiesListFound);
-  }, [storiesList, wholeData]);
+
+    const comicsListFound = wholeData.reduce((acc, curr) => {
+      const currComics = curr?.characterComics?.items || [];
+      return [...acc, ...currComics];
+    }, []);
+    setComicsList(comicsListFound);
+  }, [wholeData]);
 
   const onChangeStoryName = (evt) => {
     const {
       target: { value },
     } = evt;
     setStoryId(value);
+    setComicId("");
   };
 
-  const renderCards = () => {
-
-    // if (wholeData.length === 0) return;
-    // const { comics, characters } = wholeData.reduce((acc, curr) => {
-    //   let { comics, characters } = acc;
-    //   const dataType = curr.type;
-
-    //   switch (dataType) {
-    //     case "character":
-    //        characters = [ ...characters, curr];
-    //        break;
-    //     case "comic":
-    //        comics = [ ...comics, curr];
-    //        break;
-    //     default: 
-    //       break;
-    //   }
-    //   return { characters, comics };
-    // }, {
-    //   comics: [],
-    //   characters: []
-    // });
-
-    // const finalData = [...characters, ...comics];
-
-    return wholeData
-      //.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-      .map((val) => {
-        if (isLoading) return <p key={val.id}>Loading...</p>;
-        return <Cards values={val} key={val.id} from="characterView" />;
-      });
+  const onChangeComicsName = (evt) => {
+    const {
+      target: { value },
+    } = evt;
+    setComicId(value);
+    setStoryId("");
   };
 
+  const renderCards = () => { 
+    const searchTypeData = wholeData.filter( val => val.type === searchType);
+    const dataToRender = searchTypeData.length === 0 ? wholeData : searchTypeData;
 
+    if (dataToRender.length === 0 ) { return <p>No data found try to adjust the filters</p> }
 
-  const renderFilters = () => {
+    return dataToRender.map((val) => {
+      if (isLoading) return <p key={val.id}>Loading...</p>;
+      return <Cards values={val} key={val.id} from="characterView" />;
+    });
+  };
+
+  const renderStoriesFilters = () => {
     const storiesUrls = storiesList.map((storiesUrl) => {
       return storiesUrl.resourceURI;
     });
@@ -190,6 +174,7 @@ const SearchResults = () => {
         (storiesArray, index) =>
           storiesUrls.indexOf(storiesArray.resourceURI) === index
       )
+      .filter((nonBlankStories) => nonBlankStories.name)
       .map((val) => {
         const id = val.resourceURI.split("/stories/")[1];
 
@@ -197,7 +182,7 @@ const SearchResults = () => {
           <div className="form-check" key={id}>
             <input
               className="form-check-input"
-              name="filter"
+              name="Filter"
               type="radio"
               value={id}
               id={id}
@@ -211,24 +196,150 @@ const SearchResults = () => {
       });
   };
 
+  const onChangeSearchType = (evt) => {
+    const {target:{value}} = evt;
+
+    console.log(value);
+
+    setSearchType(value);
+    value === 'all' ? setIsChecked(false) : setIsChecked(true);
+  }
+
+  const renderComicsFilters = () => {
+    const comicsUrls = comicsList.map((comicUrl) => {
+      return comicUrl.resourceURI;
+    });
+
+    if (searchType === 'comic') {
+      return wholeData.filter( val => val.type === searchType).map(val => {
+        return (
+          <div className="form-check" key={val.id}>
+            <input
+              className="form-check-input"
+              name="Filter"
+              type="radio"
+              value={val.id}
+              id={val.id}
+              onChange={onChangeComicsName}
+            />
+            <label className="form-check-label" htmlFor={val.id}>
+              {val.name}
+            </label>
+          </div>
+        )
+      });
+    } else {
+      return comicsList
+      .filter(
+        (comicsArray, index) =>
+          comicsUrls.indexOf(comicsArray.resourceURI) === index
+      )
+      .filter((nonBlankComics) => nonBlankComics.name)
+      .map((val) => {
+        const id = val.resourceURI.split("/comics/")[1];
+
+        return (
+          <div className="form-check" key={id}>
+            <input
+              className="form-check-input"
+              name="Filter"
+              type="radio"
+              value={id}
+              id={id}
+              onChange={onChangeComicsName}
+            />
+            <label className="form-check-label" htmlFor={id}>
+              {val.name}
+            </label>
+          </div>
+        );
+      });
+    }
+  };
+
   return (
     <>
       <div className="row">
         <div className="col-3">
           <div>
-            <div
-              className="g-4 my-4 overflow-auto"
-              style={{
-                height: "26rem",
-                position: "fixed",
-                left: "4rem",
-                width: "18rem",
-                textAlign: "left",
-                top: "147px",
-              }}
-            >
-              <h3>Stories</h3>
-              {renderFilters()}
+            <div className="g-4 my-4 overflow-auto text-start">
+              <div className="type-container">
+                <h3>Search Type</h3>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    name="typeFilter"
+                    type="radio"
+                    value="all"
+                    id="allRadioButton"
+                    onChange={onChangeSearchType}
+                    checked={isChecked}
+                  />
+                  <label className="form-check-label" htmlFor="allRadioButton">
+                    All
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    name="typeFilter"
+                    type="radio"
+                    value="character"
+                    id="characterRadioButton"
+                    onChange={onChangeSearchType}
+                  />
+                  <label className="form-check-label" htmlFor="characterRadioButton">
+                    Character
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    name="typeFilter"
+                    type="radio"
+                    value="comic"
+                    id="comicRadioButton"
+                    onChange={onChangeSearchType}
+                  />
+                  <label className="form-check-label" htmlFor="comicRadioButton">
+                    Comic
+                  </label>
+                </div>
+              </div>
+              <div className="stories-container">
+                <h3>Stories</h3>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    name="Filter"
+                    type="radio"
+                    value=""
+                    id="allStories"
+                    onChange={onChangeStoryName}
+                  />
+                  <label className="form-check-label" htmlFor="allStories">
+                    All
+                  </label>
+                </div>
+                {renderStoriesFilters()}
+              </div>
+              <div className="comics-container mt-4">
+                <h3>Comics</h3>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    name="Filter"
+                    type="radio"
+                    value=""
+                    id="allComics"
+                    onChange={onChangeComicsName}
+                  />
+                  <label className="form-check-label" htmlFor="allComics">
+                    All
+                  </label>
+                </div>
+                {renderComicsFilters()}
+              </div>
             </div>
           </div>
         </div>

@@ -1,0 +1,9 @@
+.card {
+  min-height: 450px;
+}
+
+.card img {
+  height: 215px;
+  margin: 0 auto;
+  width: 60%;
+}
