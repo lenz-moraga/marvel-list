@@ -6,4 +6,5 @@
   height: 215px;
   margin: 0 auto;
   width: 60%;
+  object-fit: contain;
 }

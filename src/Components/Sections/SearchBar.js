@@ -6,13 +6,11 @@ const SearchBar = () => {
   const [searchInput, setSearchInput] = useState("");
   let history = useHistory();
 
-  const onChangeSearchInput = ({ target: { value } }) => setSearchInput(value);
+  const onChangeSearchInput = (evt) => { const { target: { value } } = evt; setSearchInput(value); }
 
   const onSearchHandler = (evt) => {
     evt.preventDefault();
-    setSearchInput(evt.target.value);
-    history.push("/search/" + searchInput.split("#").join("No."));
-    setSearchInput("");
+    history.push(`/search/${searchInput.split("#").join("No.")}`);
   };
 
   return (
@@ -28,7 +26,7 @@ const SearchBar = () => {
                 aria-label="Search"
                 onChange={onChangeSearchInput}
                 value={searchInput}
-              ></input>
+              />
               <Button
                 cssClasses="btn btn-outline-success"
                 searchParameterProp={searchInput}

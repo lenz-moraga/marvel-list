@@ -2,15 +2,27 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Cards from "../Components/Cards/Cards";
+import FilterSection from "../Components/Sections/FilterSection";
 
 import "./SearchResults.css";
 
 const SearchResults = () => {
+  const TYPE_FILTER_DATA = [
+    {
+      name: "character",
+      resourceURI: "http://gateway.marvel.com/v1/public/type/character",
+      type: "character",
+    },
+    {
+      name: "comic",
+      resourceURI: "http://gateway.marvel.com/v1/public/type/comic",
+      type: "comic",
+    },
+  ];
   const [wholeData, setWholeData] = useState([]);
   const [storyId, setStoryId] = useState("");
   const [comicId, setComicId] = useState("");
-  const [isChecked, setIsChecked] = useState(true);
-  const [searchType, setSearchType] = useState("");
+  const [searchType, setSearchType] = useState("all");
   const [storiesList, setStoriesList] = useState([]);
   const [comicsList, setComicsList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +62,8 @@ const SearchResults = () => {
     return structuredComicUrl;
   };
 
-  const rootUrl = "https://gateway.marvel.com:443/v1/public/";
+  const rootUrl = process.env.REACT_APP_ROOT_URL;
+  const key = process.env.REACT_APP_ROOT_KEY;
 
   const searchParameter = params.searchparam.trim();
   const characterSearch = isNaN(searchParameter)
@@ -58,22 +71,19 @@ const SearchResults = () => {
     : `characters/${searchParameter}?`;
   const comicSearch = `comics?titleStartsWith=${getComicFilter()}&`;
 
-  const key1 =
-    "ts=35&apikey=9e388ca2a7369beba8961e77512c7424&hash=cf5cf23a61ba45d6661053f6344efe78";
-
   useEffect(() => {
     setIsLoading(true);
 
     const storiePartialUrl = storyId ? `stories=${storyId}&` : "";
     const comicPartialUrl = comicId ? `comics=${comicId}&` : "";
 
-    const characterUrl = `${rootUrl}${characterSearch}${comicPartialUrl}${storiePartialUrl}${key1}`;
+    const characterUrl = `${rootUrl}/${characterSearch}${comicPartialUrl}${storiePartialUrl}${key}`;
 
     let comicUrl;
-    if (searchType === 'comic' && comicId) {
-      comicUrl = `${rootUrl}comics/${comicId}?${key1}`;
+    if (searchType === "comic" && comicId) {
+      comicUrl = `${rootUrl}/comics/${comicId}?${key}`;
     } else {
-      comicUrl = `${rootUrl}${comicSearch}${storiePartialUrl}${key1}`;
+      comicUrl = `${rootUrl}/${comicSearch}${storiePartialUrl}${key}`;
     }
 
     const characterRequest = axios.get(characterUrl);
@@ -118,7 +128,7 @@ const SearchResults = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [characterSearch, comicSearch, storyId, comicId, searchType]);
+  }, [characterSearch, comicSearch, storyId, comicId, searchType, rootUrl, key]);
 
   useEffect(() => {
     if (wholeData.length === 0) return;
@@ -136,11 +146,19 @@ const SearchResults = () => {
     setComicsList(comicsListFound);
   }, [wholeData]);
 
+  const onChangeSearchType = (evt) => {
+    const {
+      target: { value },
+    } = evt;
+    console.log(value)
+    setSearchType(value);
+  };
+
   const onChangeStoryName = (evt) => {
     const {
       target: { value },
     } = evt;
-    setStoryId(value);
+    value !== 'all' ? setStoryId(value) : setStoryId("") ;
     setComicId("");
   };
 
@@ -148,113 +166,22 @@ const SearchResults = () => {
     const {
       target: { value },
     } = evt;
-    setComicId(value);
+    value !== 'all' ? setComicId(value) : setComicId("") ;
     setStoryId("");
   };
 
-  const renderCards = () => { 
-    const searchTypeData = wholeData.filter( val => val.type === searchType);
-    const dataToRender = searchTypeData.length === 0 ? wholeData : searchTypeData;
+  const renderCards = () => {
+    const searchTypeData = wholeData.filter((val) => val.type === searchType);
+    const dataToRender = searchType === "all" ? wholeData : searchTypeData;
 
-    if (dataToRender.length === 0 ) { return <p>No data found try to adjust the filters</p> }
+    if (dataToRender.length === 0) {
+      return <p>No data found try to adjust the filters</p>;
+    }
 
     return dataToRender.map((val) => {
       if (isLoading) return <p key={val.id}>Loading...</p>;
       return <Cards values={val} key={val.id} from="characterView" />;
     });
-  };
-
-  const renderStoriesFilters = () => {
-    const storiesUrls = storiesList.map((storiesUrl) => {
-      return storiesUrl.resourceURI;
-    });
-
-    return storiesList
-      .filter(
-        (storiesArray, index) =>
-          storiesUrls.indexOf(storiesArray.resourceURI) === index
-      )
-      .filter((nonBlankStories) => nonBlankStories.name)
-      .map((val) => {
-        const id = val.resourceURI.split("/stories/")[1];
-
-        return (
-          <div className="form-check" key={id}>
-            <input
-              className="form-check-input"
-              name="Filter"
-              type="radio"
-              value={id}
-              id={id}
-              onChange={onChangeStoryName}
-            />
-            <label className="form-check-label" htmlFor={id}>
-              {val.name}
-            </label>
-          </div>
-        );
-      });
-  };
-
-  const onChangeSearchType = (evt) => {
-    const {target:{value}} = evt;
-
-    console.log(value);
-
-    setSearchType(value);
-    value === 'all' ? setIsChecked(false) : setIsChecked(true);
-  }
-
-  const renderComicsFilters = () => {
-    const comicsUrls = comicsList.map((comicUrl) => {
-      return comicUrl.resourceURI;
-    });
-
-    if (searchType === 'comic') {
-      return wholeData.filter( val => val.type === searchType).map(val => {
-        return (
-          <div className="form-check" key={val.id}>
-            <input
-              className="form-check-input"
-              name="Filter"
-              type="radio"
-              value={val.id}
-              id={val.id}
-              onChange={onChangeComicsName}
-            />
-            <label className="form-check-label" htmlFor={val.id}>
-              {val.name}
-            </label>
-          </div>
-        )
-      });
-    } else {
-      return comicsList
-      .filter(
-        (comicsArray, index) =>
-          comicsUrls.indexOf(comicsArray.resourceURI) === index
-      )
-      .filter((nonBlankComics) => nonBlankComics.name)
-      .map((val) => {
-        const id = val.resourceURI.split("/comics/")[1];
-
-        return (
-          <div className="form-check" key={id}>
-            <input
-              className="form-check-input"
-              name="Filter"
-              type="radio"
-              value={id}
-              id={id}
-              onChange={onChangeComicsName}
-            />
-            <label className="form-check-label" htmlFor={id}>
-              {val.name}
-            </label>
-          </div>
-        );
-      });
-    }
   };
 
   return (
@@ -265,80 +192,35 @@ const SearchResults = () => {
             <div className="g-4 my-4 overflow-auto text-start">
               <div className="type-container">
                 <h3>Search Type</h3>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    name="typeFilter"
-                    type="radio"
-                    value="all"
-                    id="allRadioButton"
-                    onChange={onChangeSearchType}
-                    checked={isChecked}
-                  />
-                  <label className="form-check-label" htmlFor="allRadioButton">
-                    All
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    name="typeFilter"
-                    type="radio"
-                    value="character"
-                    id="characterRadioButton"
-                    onChange={onChangeSearchType}
-                  />
-                  <label className="form-check-label" htmlFor="characterRadioButton">
-                    Character
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    name="typeFilter"
-                    type="radio"
-                    value="comic"
-                    id="comicRadioButton"
-                    onChange={onChangeSearchType}
-                  />
-                  <label className="form-check-label" htmlFor="comicRadioButton">
-                    Comic
-                  </label>
-                </div>
+                <FilterSection
+                  filterType={"Search Type"}
+                  filterGroup={"searchType"}
+                  filterData={TYPE_FILTER_DATA}
+                  isChecked={true}
+                  onFilterChangeHandler={onChangeSearchType}
+                />
+                <hr />
               </div>
-              <div className="stories-container">
+              <div className="mt-4">
                 <h3>Stories</h3>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    name="Filter"
-                    type="radio"
-                    value=""
-                    id="allStories"
-                    onChange={onChangeStoryName}
-                  />
-                  <label className="form-check-label" htmlFor="allStories">
-                    All
-                  </label>
-                </div>
-                {renderStoriesFilters()}
+                <FilterSection
+                  filterType={"Stories"}
+                  filterGroup={"Story"}
+                  filterData={storiesList}
+                  isChecked={true}
+                  onFilterChangeHandler={onChangeStoryName}
+                />
+                <hr />
               </div>
-              <div className="comics-container mt-4">
+              <div className="mt-4">
                 <h3>Comics</h3>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    name="Filter"
-                    type="radio"
-                    value=""
-                    id="allComics"
-                    onChange={onChangeComicsName}
-                  />
-                  <label className="form-check-label" htmlFor="allComics">
-                    All
-                  </label>
-                </div>
-                {renderComicsFilters()}
+                <FilterSection
+                  filterType={"Comics"}
+                  filterGroup={"Comic"}
+                  filterData={comicsList}
+                  isChecked={true}
+                  onFilterChangeHandler={onChangeComicsName}
+                />
               </div>
             </div>
           </div>

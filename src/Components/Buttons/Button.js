@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Button = (props) => {  
-    let buttonUrl = props.buttonType;
+    let buttonUrl = '#';
 
     if (props.buttonType === 'characterView') {
         buttonUrl = '/characters/'+props.values.id; 
@@ -13,9 +13,7 @@ const Button = (props) => {
     } else if (props.buttonType === 'characterViewAll') {
         buttonUrl = '/characters';
     } else if (props.buttonType === 'search') {        
-        if(props.searchParameterProp === '') {
-            buttonUrl = '#';
-        } else {
+        if(props.searchParameterProp) {
             buttonUrl = '/search/'+props.searchParameterProp.split('#').join('No.');
         }
     }    
