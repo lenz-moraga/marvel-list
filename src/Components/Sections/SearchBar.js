@@ -1,12 +1,25 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import Button from "../Buttons/Button";
 
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState("");
   let history = useHistory();
+  let location = useLocation();
 
-  const onChangeSearchInput = (evt) => { const { target: { value } } = evt; setSearchInput(value); }
+  useEffect(() => {
+    if (!location.pathname.includes("/search/") && searchInput) {
+      setSearchInput("");
+    }
+  }, [location, searchInput]);
+
+  const onChangeSearchInput = (evt) => {
+    const {
+      target: { value },
+    } = evt;
+    setSearchInput(value);
+    console.log(location);
+  };
 
   const onSearchHandler = (evt) => {
     evt.preventDefault();

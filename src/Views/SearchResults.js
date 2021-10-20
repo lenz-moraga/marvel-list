@@ -19,13 +19,16 @@ const SearchResults = () => {
       type: "comic",
     },
   ];
+  const FILTER_INITIAL_STATE = "all";
+
   const [wholeData, setWholeData] = useState([]);
-  const [storyId, setStoryId] = useState("");
-  const [comicId, setComicId] = useState("");
-  const [searchType, setSearchType] = useState("all");
   const [storiesList, setStoriesList] = useState([]);
   const [comicsList, setComicsList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [searchType, setSearchType] = useState(FILTER_INITIAL_STATE);
+  const [storyId, setStoryId] = useState(FILTER_INITIAL_STATE);
+  const [comicId, setComicId] = useState(FILTER_INITIAL_STATE);
 
   const params = useParams();
 
@@ -45,18 +48,22 @@ const SearchResults = () => {
     }
 
     /*if the user is using a more complete structure using the parenthesis and the year, we will get that year here. */
+
     if (params.searchparam.indexOf("(") > 0) {
       year = params.searchparam.substring(
         params.searchparam.indexOf("(") + 1,
         params.searchparam.lastIndexOf(")")
       );
-      structuredComicUrl += "&startYear=" + year;
+
+      if (!isNaN(year)) {
+        structuredComicUrl += `&startYear=${year}`;
+      }
     }
 
     /*for the issue number, we are replacing the # in the URL, so we can identify whether if the user is looking for the comin using the issue number or not*/
     issue = params.searchparam.split("No.").join("#");
     if (issue.indexOf("#") > 0) {
-      structuredComicUrl += "&issueNumber=" + issue.split("#")[1];
+      structuredComicUrl += `&issueNumber=${issue.split("#")[1]}`;
     }
 
     return structuredComicUrl;
@@ -74,13 +81,17 @@ const SearchResults = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    const storiePartialUrl = storyId ? `stories=${storyId}&` : "";
-    const comicPartialUrl = comicId ? `comics=${comicId}&` : "";
+    const storiePartialUrl = !isNaN(parseInt(storyId))
+      ? `stories=${storyId}&`
+      : "";
+    const comicPartialUrl = !isNaN(parseInt(comicId))
+      ? `comics=${comicId}&`
+      : "";
 
     const characterUrl = `${rootUrl}/${characterSearch}${comicPartialUrl}${storiePartialUrl}${key}`;
 
     let comicUrl;
-    if (searchType === "comic" && comicId) {
+    if (searchType === "comic" && !isNaN(comicId)) {
       comicUrl = `${rootUrl}/comics/${comicId}?${key}`;
     } else {
       comicUrl = `${rootUrl}/${comicSearch}${storiePartialUrl}${key}`;
@@ -128,7 +139,15 @@ const SearchResults = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [characterSearch, comicSearch, storyId, comicId, searchType, rootUrl, key]);
+  }, [
+    characterSearch,
+    comicSearch,
+    storyId,
+    comicId,
+    searchType,
+    rootUrl,
+    key,
+  ]);
 
   useEffect(() => {
     if (wholeData.length === 0) return;
@@ -150,7 +169,7 @@ const SearchResults = () => {
     const {
       target: { value },
     } = evt;
-    console.log(value)
+
     setSearchType(value);
   };
 
@@ -158,16 +177,16 @@ const SearchResults = () => {
     const {
       target: { value },
     } = evt;
-    value !== 'all' ? setStoryId(value) : setStoryId("") ;
-    setComicId("");
+
+    setStoryId(value);
   };
 
   const onChangeComicsName = (evt) => {
     const {
       target: { value },
     } = evt;
-    value !== 'all' ? setComicId(value) : setComicId("") ;
-    setStoryId("");
+
+    setComicId(value);
   };
 
   const renderCards = () => {
@@ -196,8 +215,8 @@ const SearchResults = () => {
                   filterType={"Search Type"}
                   filterGroup={"searchType"}
                   filterData={TYPE_FILTER_DATA}
-                  isChecked={true}
-                  onFilterChangeHandler={onChangeSearchType}
+                  selectedRadioButton={searchType}
+                  onFilterChange={onChangeSearchType}
                 />
                 <hr />
               </div>
@@ -207,8 +226,8 @@ const SearchResults = () => {
                   filterType={"Stories"}
                   filterGroup={"Story"}
                   filterData={storiesList}
-                  isChecked={true}
-                  onFilterChangeHandler={onChangeStoryName}
+                  selectedRadioButton={storyId}
+                  onFilterChange={onChangeStoryName}
                 />
                 <hr />
               </div>
@@ -218,8 +237,8 @@ const SearchResults = () => {
                   filterType={"Comics"}
                   filterGroup={"Comic"}
                   filterData={comicsList}
-                  isChecked={true}
-                  onFilterChangeHandler={onChangeComicsName}
+                  selectedRadioButton={comicId}
+                  onFilterChange={onChangeComicsName}
                 />
               </div>
             </div>

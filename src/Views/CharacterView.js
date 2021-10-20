@@ -6,7 +6,7 @@ import Cards from '../Components/Cards/Cards';
 const CharacterView = () => {
   const [cardInformation, setCardInformation] = useState([]);
 
-  const getCharactersUrl = 'https://gateway.marvel.com:443/v1/public/characters?ts=71&apikey=557c4a290d82f5c62dd430ce6d7b52a7&hash=f888c6636658ce15613721c842998aa9';
+  const getCharactersUrl = `${process.env.REACT_APP_ROOT_URL}/characters?${process.env.REACT_APP_ROOT_KEY}`
 
   useEffect(() => {
     axios.get(getCharactersUrl).then(res => {
@@ -30,7 +30,7 @@ const CharacterView = () => {
       setCardInformation(transformedObject); 
       
       }).catch(error => console.log(error));
-  }, []);
+  }, [getCharactersUrl]);
 
     return (
         <>

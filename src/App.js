@@ -9,6 +9,7 @@ import CharacterDetailView from './Views/CharacterDetailView';
 
 import Navbar from './Components/Sections/Navbar';
 import SearchBar from './Components/Sections/SearchBar';
+import React from 'react';
 
 function App() {  
 
@@ -34,7 +35,7 @@ function App() {
           <ComicsView />
         </Route>
         <Route path='/search/:searchparam'>
-          <SearchResults/>
+          <SearchResults />
         </Route>        
       </Switch>
     </div>

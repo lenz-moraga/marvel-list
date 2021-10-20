@@ -1,7 +1,6 @@
 import React from "react";
 
 const FilterSection = (props) => {
-
   const renderFilters = () => {
     if (!props.filterData.length) return;
 
@@ -33,7 +32,8 @@ const FilterSection = (props) => {
             type="radio"
             value={id}
             id={id}
-            onChange={props.onFilterChangeHandler}
+            onChange={props.onFilterChange}
+            checked={props.selectedRadioButton === id}
           />
           <label className="form-check-label text-capitalize" htmlFor={id}>
             {val.name}
@@ -51,11 +51,14 @@ const FilterSection = (props) => {
           name={props.filterGroup}
           type="radio"
           value="all"
-          id="all"
-          onChange={props.onFilterChangeHandler}
-          checked={props.isChecked}
+          id={props.filterGroup}
+          onChange={props.onFilterChange}
+          checked={props.selectedRadioButton === 'all'}
         />
-        <label className="form-check-label text-capitalize" htmlFor="all">
+        <label
+          className="form-check-label text-capitalize"
+          htmlFor={props.filterGroup}
+        >
           all
         </label>
       </div>
