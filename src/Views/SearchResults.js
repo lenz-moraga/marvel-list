@@ -30,7 +30,7 @@ const SearchResults = () => {
   const [storyId, setStoryId] = useState(FILTER_INITIAL_STATE);
   const [comicId, setComicId] = useState(FILTER_INITIAL_STATE);
 
-  const params = useParams();
+  const { searchparam } = useParams();
 
   const getComicFilter = () => {
     let comicStartName, year, issue;
@@ -38,21 +38,21 @@ const SearchResults = () => {
     /*If the user is looking for a comic with the exact structure: name (year) #issue number, the app should make the following validations, if the user writes the complete structure, the if's will destructure the string.*/
 
     /*first, the name of the comic, if there are any parenthesis, it should get the text before them, else, the user might be looking for a character or making the search by just the name of the comic.*/
-    if (params.searchparam.lastIndexOf("(") > 1) {
-      comicStartName = params.searchparam
+    if (searchparam.lastIndexOf("(") > 1) {
+      comicStartName = searchparam
         .trim()
-        .substring(0, params.searchparam.lastIndexOf("("));
+        .substring(0, searchparam.lastIndexOf("("));
       structuredComicUrl += comicStartName.trim();
     } else {
-      structuredComicUrl += params.searchparam.trim();
+      structuredComicUrl += searchparam.trim();
     }
 
     /*if the user is using a more complete structure using the parenthesis and the year, we will get that year here. */
 
-    if (params.searchparam.indexOf("(") > 0) {
-      year = params.searchparam.substring(
-        params.searchparam.indexOf("(") + 1,
-        params.searchparam.lastIndexOf(")")
+    if (searchparam.indexOf("(") > 0) {
+      year = searchparam.substring(
+        searchparam.indexOf("(") + 1,
+        searchparam.lastIndexOf(")")
       );
 
       if (!isNaN(year)) {
@@ -61,7 +61,7 @@ const SearchResults = () => {
     }
 
     /*for the issue number, we are replacing the # in the URL, so we can identify whether if the user is looking for the comin using the issue number or not*/
-    issue = params.searchparam.split("No.").join("#");
+    issue = searchparam.split("No.").join("#");
     if (issue.indexOf("#") > 0) {
       structuredComicUrl += `&issueNumber=${issue.split("#")[1]}`;
     }
@@ -72,7 +72,7 @@ const SearchResults = () => {
   const rootUrl = process.env.REACT_APP_ROOT_URL;
   const key = process.env.REACT_APP_ROOT_KEY;
 
-  const searchParameter = params.searchparam.trim();
+  const searchParameter = searchparam.trim();
   const characterSearch = isNaN(searchParameter)
     ? `characters?nameStartsWith=${searchParameter}&`
     : `characters/${searchParameter}?`;
@@ -193,12 +193,12 @@ const SearchResults = () => {
     const searchTypeData = wholeData.filter((val) => val.type === searchType);
     const dataToRender = searchType === "all" ? wholeData : searchTypeData;
 
-    if (dataToRender.length === 0) {
+    
+    if (isLoading) return <p>Loading...</p>;
+    if (dataToRender.length === 0)
       return <p>No data found try to adjust the filters</p>;
-    }
 
     return dataToRender.map((val) => {
-      if (isLoading) return <p key={val.id}>Loading...</p>;
       return <Cards values={val} key={val.id} from="characterView" />;
     });
   };

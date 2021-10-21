@@ -4,10 +4,10 @@ const FilterSection = (props) => {
   const renderFilters = () => {
     if (!props.filterData.length) return;
 
-    let storyListFiltered = Object.values(props.filterData);
+    let filteredList = Object.values(props.filterData);
 
     if (props.filterGroup !== "Search Type") {
-      storyListFiltered = Object.values(props.filterData).reduce(
+      filteredList = Object.values(props.filterData).reduce(
         (acc, curr) => {
           return acc.some((s) => s.resourceURI === curr.resourceURI) ||
             !curr.name
@@ -18,7 +18,7 @@ const FilterSection = (props) => {
       );
     }
 
-    return storyListFiltered.map((val) => {
+    return filteredList.map((val) => {
       const id =
         val.resourceURI.split("/comics/")[1] ||
         val.resourceURI.split("/stories/")[1] ||

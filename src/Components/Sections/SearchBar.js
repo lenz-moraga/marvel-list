@@ -8,17 +8,16 @@ const SearchBar = () => {
   let location = useLocation();
 
   useEffect(() => {
-    if (!location.pathname.includes("/search/") && searchInput) {
+    if (!location.pathname.includes("/search/")) {
       setSearchInput("");
     }
-  }, [location, searchInput]);
+  }, [location]);
 
   const onChangeSearchInput = (evt) => {
     const {
       target: { value },
     } = evt;
     setSearchInput(value);
-    console.log(location);
   };
 
   const onSearchHandler = (evt) => {

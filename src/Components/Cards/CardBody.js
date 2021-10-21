@@ -7,7 +7,7 @@ import "./CardBody.css";
 const CardBody = (props) => {
   const charObject = props.values;
   const noDescriptionAvailable = (desc) => {
-    if (desc === "" || desc === null) {
+    if (!desc || desc.length === 0) {
       return (desc =
         "There is no description available for this " +
         charObject.type +

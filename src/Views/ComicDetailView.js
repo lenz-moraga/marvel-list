@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-import DetailedInfoSection from "../Components/Sections/DetailedInfoSection";
+const ComicDetailView = () => {
+  const { comicId } = useParams();
+  const [comicDetail, setComicDetail] = useState({});
+  const [comicInfoUrl, setComicInfoUrl] = useState([]);
+  const [characterComics, setCharacterComics] = useState([]);
+  const [storyComics, setStoryComics] = useState([]);
 
-const CharacterDetailView = () => {
-  const { charId } = useParams();
-  const [charDetail, setCharDetail] = useState({});
-  const [charUrl, setCharUrl] = useState([]);
-  const [charStories, setCharStories] = useState([]);
-  const [charComics, setCharComics] = useState([]);
-
-  const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/characters/${charId}?${process.env.REACT_APP_ROOT_KEY}`;
+  const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/comics/${comicId}?${process.env.REACT_APP_ROOT_KEY}`;
 
   useEffect(() => {
     axios
       .get(endPointUrl)
       .then(function (response) {
-        const characterInfo = response.data.data.results[0];
-        setCharDetail(characterInfo);
-        setCharUrl(characterInfo.urls);
-        setCharStories(characterInfo.stories.items);
-        setCharComics(characterInfo.comics.items);
+        const comicInfo = response.data.data.results[0];
+        setComicDetail(comicInfo);
+        setComicInfoUrl(comicInfo.urls);
+        setCharacterComics(comicInfo.characters.items);
+        setStoryComics(comicInfo.stories.items);
+
+        console.log(comicInfo)
       })
       .catch(function (error) {
         console.log(error);
@@ -29,7 +29,7 @@ const CharacterDetailView = () => {
   }, [endPointUrl]);
 
   const renderImage = () => {
-    return Object.entries(charDetail).length === 0 ? (
+    return Object.entries(comicDetail).length === 0 ? (
       <img
         src="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
         className="img-thumbnail"
@@ -37,7 +37,7 @@ const CharacterDetailView = () => {
       ></img>
     ) : (
       <img
-        src={`${charDetail.thumbnail.path}.${charDetail.thumbnail.extension}`}
+        src={`${comicDetail.thumbnail.path}.${comicDetail.thumbnail.extension}`}
         className="img-thumbnail"
         alt=""
       ></img>
@@ -47,15 +47,15 @@ const CharacterDetailView = () => {
   const renderCharInformation = () => {
     return (
       <>
-        <h3>{charDetail.name}</h3>
+        <h3>{comicDetail.title}</h3>
         <p className="text-start">
-          {charDetail.description === ""
-            ? (charDetail.description =
+          {!comicDetail.description
+            ? (comicDetail.description =
                 "There is no description available for this character, visit the links below for more information...")
-            : charDetail.description}
+            : comicDetail.description}
         </p>
 
-        <div className="my-4">
+        {/* <div className="my-4">
           <h3>Comics</h3>
           <DetailedInfoSection information={charComics} />
         </div>
@@ -63,22 +63,22 @@ const CharacterDetailView = () => {
         <div>
           <h3>Stories</h3>
           <DetailedInfoSection information={charStories} />
-        </div>
+        </div> */}
 
         <div>
           <ul>
             <h4 className="mt-4">
-              Learn more about this Character in the following links
+              Learn more about this Comic in the following links
             </h4>
-            {renderCharWikiLinks()}
+            {renderComicWikiLinks()}
           </ul>
         </div>
       </>
     );
   };
 
-  const renderCharWikiLinks = () => {
-    return charUrl.map((url) => {
+  const renderComicWikiLinks = () => {
+    return comicInfoUrl.map((url) => {
       return (
         <li className="text-start text-capitalize" key={url.type}>
           <a href={url.url} target="_blank" rel="noreferrer">
@@ -101,4 +101,4 @@ const CharacterDetailView = () => {
   );
 };
 
-export default CharacterDetailView;
+export default ComicDetailView;
