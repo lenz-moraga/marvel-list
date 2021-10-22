@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+import { Link } from "react-router-dom";
+
 import DetailedInfoSection from "../Components/Sections/DetailedInfoSection";
 
 const CharacterDetailView = () => {
@@ -80,11 +82,14 @@ const CharacterDetailView = () => {
   const renderCharWikiLinks = () => {
     return charUrl.map((url) => {
       return (
-        <li className="text-start text-capitalize" key={url.type}>
-          <a href={url.url} target="_blank" rel="noreferrer">
+        <span
+          className="badge rounded-pill bg-primary m-1 p-2 text-capitalize"
+          key={url.type}
+        >
+          <Link to={{ pathname: url.url }} target="_blank" rel="noreferrer" className="text-light text-decoration-none text-capitalize">
             {url.type}
-          </a>
-        </li>
+          </Link>
+        </span>
       );
     });
   };

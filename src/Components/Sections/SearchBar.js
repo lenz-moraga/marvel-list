@@ -5,12 +5,16 @@ import Button from "../Buttons/Button";
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState("");
   let history = useHistory();
-  let location = useLocation();
+  let location = useLocation();  
 
   useEffect(() => {
-    if (!location.pathname.includes("/search/")) {
-      setSearchInput("");
+    const resetSearchInput = () => {
+      if (!location.pathname.includes("/search/")) {
+        setSearchInput("");
+      }
     }
+
+    resetSearchInput();
   }, [location]);
 
   const onChangeSearchInput = (evt) => {

@@ -7,6 +7,7 @@ import ComicsView from './Views/ComicsView';
 import SearchResults from './Views/SearchResults';
 import CharacterDetailView from './Views/CharacterDetailView';
 import ComicDetailView from './Views/ComicDetailView';
+import StoryDetailedView from './Views/StoryDetailedView';
 
 import Navbar from './Components/Sections/Navbar';
 import SearchBar from './Components/Sections/SearchBar';
@@ -37,6 +38,9 @@ function App() {
         </Route>
         <Route path='/comics/:comicId'>
           <ComicDetailView />
+        </Route>
+        <Route path='/stories/:storyId'>
+          <StoryDetailedView />
         </Route>
         <Route path='/search/:searchparam'>
           <SearchResults />

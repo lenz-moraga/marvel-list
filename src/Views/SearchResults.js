@@ -4,21 +4,14 @@ import axios from "axios";
 import Cards from "../Components/Cards/Cards";
 import FilterSection from "../Components/Sections/FilterSection";
 
+import data from "../Jsons/ConstantObjects.json";
+
 import "./SearchResults.css";
 
 const SearchResults = () => {
-  const TYPE_FILTER_DATA = [
-    {
-      name: "character",
-      resourceURI: "http://gateway.marvel.com/v1/public/type/character",
-      type: "character",
-    },
-    {
-      name: "comic",
-      resourceURI: "http://gateway.marvel.com/v1/public/type/comic",
-      type: "comic",
-    },
-  ];
+  const TYPE_FILTER_DATA = data.constants.TYPE_FILTER_DATA;
+  const FORMAT_FILTER_DATA = data.constants.FORMAT_FILTER_DATA;
+
   const FILTER_INITIAL_STATE = "all";
 
   const [wholeData, setWholeData] = useState([]);
@@ -29,6 +22,7 @@ const SearchResults = () => {
   const [searchType, setSearchType] = useState(FILTER_INITIAL_STATE);
   const [storyId, setStoryId] = useState(FILTER_INITIAL_STATE);
   const [comicId, setComicId] = useState(FILTER_INITIAL_STATE);
+  const [formatID, setFormatId] = useState(FILTER_INITIAL_STATE);
 
   const { searchparam } = useParams();
 
@@ -76,7 +70,12 @@ const SearchResults = () => {
   const characterSearch = isNaN(searchParameter)
     ? `characters?nameStartsWith=${searchParameter}&`
     : `characters/${searchParameter}?`;
-  const comicSearch = `comics?titleStartsWith=${getComicFilter()}&`;
+
+  // const formatPartialUrl = formatID ? `format=${formatID}&` : "";
+
+  const comicSearch = `comics?${
+    formatID !== FILTER_INITIAL_STATE ? `format=${formatID}&` : ""
+  }titleStartsWith=${getComicFilter()}&`;
 
   useEffect(() => {
     setIsLoading(true);
@@ -84,6 +83,7 @@ const SearchResults = () => {
     const storiePartialUrl = !isNaN(parseInt(storyId))
       ? `stories=${storyId}&`
       : "";
+
     const comicPartialUrl = !isNaN(parseInt(comicId))
       ? `comics=${comicId}&`
       : "";
@@ -91,7 +91,8 @@ const SearchResults = () => {
     const characterUrl = `${rootUrl}/${characterSearch}${comicPartialUrl}${storiePartialUrl}${key}`;
 
     let comicUrl;
-    if (searchType === "comic" && !isNaN(comicId)) {
+
+    if (searchType === "comicType" && !isNaN(comicId)) {
       comicUrl = `${rootUrl}/comics/${comicId}?${key}`;
     } else {
       comicUrl = `${rootUrl}/${comicSearch}${storiePartialUrl}${key}`;
@@ -127,7 +128,7 @@ const SearchResults = () => {
             thumbnail: cardData.thumbnail,
             url: cardData.urls,
             from: "comicView",
-            type: "comic",
+            type: "comicType",
           };
         });
 
@@ -152,16 +153,22 @@ const SearchResults = () => {
   useEffect(() => {
     if (wholeData.length === 0) return;
 
-    const storiesListFound = wholeData.reduce((acc, curr) => {
-      const currStories = curr?.stories?.items || [];
-      return [...acc, ...currStories];
-    }, []);
+    const { storiesListFound, comicsListFound } = wholeData.reduce(
+      (acc, curr) => {
+        const currStories = curr?.stories?.items || [];
+        const currComics = curr?.characterComics?.items || [];
+        return {
+          ...acc,
+          storiesListFound: [...acc.storiesListFound, ...currStories],
+          comicsListFound: [...acc.comicsListFound, ...currComics],
+        };
+      },
+      {
+        storiesListFound: [],
+        comicsListFound: [],
+      }
+    );
     setStoriesList(storiesListFound);
-
-    const comicsListFound = wholeData.reduce((acc, curr) => {
-      const currComics = curr?.characterComics?.items || [];
-      return [...acc, ...currComics];
-    }, []);
     setComicsList(comicsListFound);
   }, [wholeData]);
 
@@ -189,17 +196,24 @@ const SearchResults = () => {
     setComicId(value);
   };
 
+  const onChangeFormatType = (evt) => {
+    const {
+      target: { value },
+    } = evt;
+    setFormatId(value);
+  };
+
   const renderCards = () => {
     const searchTypeData = wholeData.filter((val) => val.type === searchType);
-    const dataToRender = searchType === "all" ? wholeData : searchTypeData;
+    const dataToRender =
+      searchType === FILTER_INITIAL_STATE ? wholeData : searchTypeData;
 
-    
     if (isLoading) return <p>Loading...</p>;
     if (dataToRender.length === 0)
       return <p>No data found try to adjust the filters</p>;
 
     return dataToRender.map((val) => {
-      return <Cards values={val} key={val.id} from="characterView" />;
+      return <Cards values={val} key={val.id} />;
     });
   };
 
@@ -240,7 +254,20 @@ const SearchResults = () => {
                   selectedRadioButton={comicId}
                   onFilterChange={onChangeComicsName}
                 />
+                <hr />
               </div>
+              {
+                <div className="mt-4">
+                  <h3>Format</h3>
+                  <FilterSection
+                    filterType={"Format"}
+                    filterGroup={"format-type"}
+                    filterData={FORMAT_FILTER_DATA}
+                    selectedRadioButton={formatID}
+                    onFilterChange={onChangeFormatType}
+                  />
+                </div>
+              }
             </div>
           </div>
         </div>

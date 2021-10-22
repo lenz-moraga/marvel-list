@@ -1,0 +1,58 @@
+{
+  "constants": {
+    "TYPE_FILTER_DATA": [
+      {
+        "name": "character",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/character",
+        "type": "character"
+      },
+      {
+        "name": "comic",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/comicType",
+        "type": "comic"
+      }
+    ],
+    "FORMAT_FILTER_DATA": [
+      {
+        "name": "comic",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/comic",
+        "type": "comic"
+      },
+      {
+        "name": "magazine",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/magazine",
+        "type": "magazine"
+      },
+      {
+        "name": "trade paperback",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/trade paperback",
+        "type": "trade paperback"
+      },
+      {
+        "name": "hardcover",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/hardcover",
+        "type": "hardcover"
+      },
+      {
+        "name": "digest",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/digest",
+        "type": "digest"
+      },
+      {
+        "name": "graphic novel",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/graphic novel",
+        "type": "graphic novel"
+      },
+      {
+        "name": "digital comic",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/digital comic",
+        "type": "digital comic"
+      },
+      {
+        "name": "infinite comic",
+        "resourceURI": "http://gateway.marvel.com/v1/public/type/infinite comic",
+        "type": "infinite comic"
+      }
+    ]
+  }
+}

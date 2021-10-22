@@ -21,12 +21,6 @@ const Navbar = (props) => {
                     <li className="nav-item">
                         <NavLink activeClassName="active" className="nav-link" to="/comics">Comics</NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink activeClassName="active" className="nav-link" to="/events">Events</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink activeClassName="active" className="nav-link" to="/stories">Stories</NavLink>
-                    </li>
                 </ul>
                 </div>
             </div>

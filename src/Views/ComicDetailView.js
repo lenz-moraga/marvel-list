@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+
+import DetailedInfoSection from "../Components/Sections/DetailedInfoSection";
 
 const ComicDetailView = () => {
   const { comicId } = useParams();
@@ -20,8 +22,6 @@ const ComicDetailView = () => {
         setComicInfoUrl(comicInfo.urls);
         setCharacterComics(comicInfo.characters.items);
         setStoryComics(comicInfo.stories.items);
-
-        console.log(comicInfo)
       })
       .catch(function (error) {
         console.log(error);
@@ -55,15 +55,15 @@ const ComicDetailView = () => {
             : comicDetail.description}
         </p>
 
-        {/* <div className="my-4">
-          <h3>Comics</h3>
-          <DetailedInfoSection information={charComics} />
+        <div className="my-4">
+          <h3>Characters</h3>
+          <DetailedInfoSection information={characterComics} />
         </div>
 
         <div>
           <h3>Stories</h3>
-          <DetailedInfoSection information={charStories} />
-        </div> */}
+          <DetailedInfoSection information={storyComics} />
+        </div>
 
         <div>
           <ul>
@@ -80,14 +80,29 @@ const ComicDetailView = () => {
   const renderComicWikiLinks = () => {
     return comicInfoUrl.map((url) => {
       return (
-        <li className="text-start text-capitalize" key={url.type}>
-          <a href={url.url} target="_blank" rel="noreferrer">
+        <span
+          className="badge rounded-pill bg-primary m-1 p-2 text-capitalize"
+          key={url.type}
+        >
+          <Link to={{ pathname: url.url }} target="_blank" rel="noreferrer" className="text-light text-decoration-none text-capitalize">
             {url.type}
-          </a>
-        </li>
+          </Link>
+        </span>
       );
     });
   };
+
+  // const renderComicWikiLinks = () => {
+  //   return comicInfoUrl.map((url) => {
+  //     return (
+  //       <li className="text-start text-capitalize" key={url.type}>
+  //         <Link to={{ pathname: url.url }} target="_blank" rel="noreferrer">
+  //           {url.type}
+  //         </Link>
+  //       </li>
+  //     );
+  //   });
+  // };
 
   return (
     <>
