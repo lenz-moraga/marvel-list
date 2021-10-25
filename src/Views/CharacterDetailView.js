@@ -12,6 +12,11 @@ const CharacterDetailView = () => {
   const [charUrl, setCharUrl] = useState([]);
   const [charStories, setCharStories] = useState([]);
   const [charComics, setCharComics] = useState([]);
+  const [quienes, setQuienes] = useState(() => {
+    const saved = localStorage.getItem("items");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
   const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/characters/${charId}?${process.env.REACT_APP_ROOT_KEY}`;
 
@@ -28,7 +33,12 @@ const CharacterDetailView = () => {
       .catch(function (error) {
         console.log(error);
       });
+
   }, [endPointUrl]);
+
+  useEffect(()=> {
+    quienes && localStorage.setItem("items", JSON.stringify(quienes));
+  },[quienes]);
 
   const renderImage = () => {
     return Object.entries(charDetail).length === 0 ? (
@@ -46,10 +56,27 @@ const CharacterDetailView = () => {
     );
   };
 
+  const onAddClickHandler = () => {
+    return setQuienes((prevState) => [charDetail, ...prevState] );
+  };
+
+  const onRemoveClickHandler = (evt) => {
+    const {target: {value}} = evt;
+    
+    console.log(quienes.filter( quien => { return parseInt(quien.id) !== value } ));    
+  };
+
   const renderCharInformation = () => {
     return (
       <>
-        <h3>{charDetail.name}</h3>
+        <h3>
+          {charDetail.name}{" "}
+          {
+            quienes.filter( quien => { return quien.id === charDetail.id } ) ? <button className="btn btn-warning" onClick={onRemoveClickHandler} value={charDetail.id}>remove</button> : <button className="btn btn-success" onClick={onAddClickHandler} value={charDetail.id}>add</button>
+          }
+          
+          
+        </h3>
         <p className="text-start">
           {charDetail.description === ""
             ? (charDetail.description =
@@ -86,7 +113,12 @@ const CharacterDetailView = () => {
           className="badge rounded-pill bg-primary m-1 p-2 text-capitalize"
           key={url.type}
         >
-          <Link to={{ pathname: url.url }} target="_blank" rel="noreferrer" className="text-light text-decoration-none text-capitalize">
+          <Link
+            to={{ pathname: url.url }}
+            target="_blank"
+            rel="noreferrer"
+            className="text-light text-decoration-none text-capitalize"
+          >
             {url.type}
           </Link>
         </span>
