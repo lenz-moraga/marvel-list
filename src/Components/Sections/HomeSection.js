@@ -1,63 +1,51 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
 import Cards from "../Cards/Cards";
 import Button from "../Buttons/Button";
 
+const CHARACTER_SECTION_TYPE = 'charactersSection';
+const COMIC_SECTION_TYPE = 'comicsSection';
+const rootUrl = process.env.REACT_APP_ROOT_URL;
+const key = process.env.REACT_APP_ROOT_KEY;
+const getCharactersUrl = `${rootUrl}/characters?${key}`;
+const getComicsUrl = `${rootUrl}/comics?${key}`;
+
 const HomeSection = (props) => {
   const [cardInformation, setCardInformation] = useState([]);
-  const CHARACTER_SECTION_TYPE = 'charactersSection';
-  const COMIC_SECTION_TYPE = 'comicsSection';
 
-  // const dataArray = [data];
-  // const dataArray1 = dataArray[0].data.results;
-  // console.log(dataArray1);
-  // script to pull from the json default file, if the Response request limit is reached
-
-  const rootUrl = process.env.REACT_APP_ROOT_URL;
-  const key = process.env.REACT_APP_ROOT_KEY;
-
-  //   const apiUrl1 = 'https://gateway.marvel.com:443/v1/public/characters?ts=71&apikey=557c4a290d82f5c62dd430ce6d7b52a7&hash=f888c6636658ce15613721c842998aa9';
-  const getCharactersUrl = `${rootUrl}/characters?${key}`;
-  const getComicsUrl = `${rootUrl}/comics?${key}`;
+    const getCharacterInfo = (from, type, cardData) => {
+	const {id, name, title, description, stories, thumbnail, urls} = cardData
+	return {
+            id,
+            name: name || title,
+            desc: description,
+            stories,
+            thumbnail,
+            url: urls,
+            from,
+            type,
+        };
+    }
 
   useEffect(() => {
     if (props.sectionType === CHARACTER_SECTION_TYPE) {
       axios
         .get(getCharactersUrl)
-        .then((res) => {
-          const transformedObject = res.data.data.results.map((cardData) => {
-            return {
-              id: cardData.id,
-              name: cardData.name,
-              desc: cardData.description,
-              stories: cardData.stories,
-              thumbnail: cardData.thumbnail,
-              url: cardData.urls,
-              from: "characterView",
-              type: "character",
-            };
-          });
-          setCardInformation(transformedObject);
-        })
+            .then((res) => {
+		const transformedObject = res.data.data.results.map((cardData) => {
+		    return getCharacterInfo('characterView', 'character', cardData)
+		})
+		setCardInformation(transformedObject);
+            })
         .catch((error) => console.log(error));
     } else if (props.sectionType === COMIC_SECTION_TYPE) {
       axios
         .get(getComicsUrl)
         .then((res) => {
-          const transformedObject = res.data.data.results.map((cardData) => {
-            return {
-              id: cardData.id,
-              name: cardData.title,
-              desc: cardData.description,
-              stories: cardData.stories,
-              thumbnail: cardData.thumbnail,
-              url: cardData.urls,
-              from: "comicView",
-              type: "comic",
-            };
-          });
-          setCardInformation(transformedObject);
+            const transformedObject = res.data.data.results.map((cardData) => {
+		return getCharacterInfo('comicView', 'comic', cardData)
+            })
+            setCardInformation(transformedObject);
         })
         .catch((error) => console.log(error));
     }
