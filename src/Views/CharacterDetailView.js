@@ -7,18 +7,15 @@ import { Link } from "react-router-dom";
 import DetailedInfoSection from "../Components/Sections/DetailedInfoSection";
 
 const CharacterDetailView = () => {
-  const { charId } = useParams();
-  const [charDetail, setCharDetail] = useState({});
-  const [charUrl, setCharUrl] = useState([]);
-  const [charStories, setCharStories] = useState([]);
-  const [charComics, setCharComics] = useState([]);
-  const [quienes, setQuienes] = useState(() => {
+    const { charId } = useParams();
+    const [charDetail, setCharDetail] = useState({});
+    const [charUrl, setCharUrl] = useState([]);
+    const [charStories, setCharStories] = useState([]);
+    const [charComics, setCharComics] = useState([]);
     const saved = localStorage.getItem("items");
     const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
-
-  const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/characters/${charId}?${process.env.REACT_APP_ROOT_KEY}`;
+    const [quienes, setQuienes] = useState(initialValue || '')
+    const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/characters/${charId}?${process.env.REACT_APP_ROOT_KEY}`;
 
   useEffect(() => {
     axios
@@ -36,9 +33,9 @@ const CharacterDetailView = () => {
 
   }, [endPointUrl]);
 
-  useEffect(()=> {
-    quienes && localStorage.setItem("items", JSON.stringify(quienes));
-  },[quienes]);
+    useEffect(()=> {
+	quienes && localStorage.setItem("items", JSON.stringify(quienes));
+    },[quienes]);
 
   const renderImage = () => {
     return Object.entries(charDetail).length === 0 ? (
@@ -61,9 +58,12 @@ const CharacterDetailView = () => {
   };
 
   const onRemoveClickHandler = (evt) => {
-    const {target: {value}} = evt;
-    
-    console.log(quienes.filter( quien => { return parseInt(quien.id) !== value } ));    
+      let  {target: {value}} = evt;
+      value = parseInt(value)
+      // console.log(quienes.filter( quien => { return parseInt(quien.id) !== value } ));
+      if (Array.isArray(quienes)) {
+	  setQuienes(quienes.filter(quien => quien.id !== value))
+      }
   };
 
   const renderCharInformation = () => {
@@ -72,7 +72,11 @@ const CharacterDetailView = () => {
         <h3>
           {charDetail.name}{" "}
           {
-            quienes.filter( quien => { return quien.id === charDetail.id } ) ? <button className="btn btn-warning" onClick={onRemoveClickHandler} value={charDetail.id}>remove</button> : <button className="btn btn-success" onClick={onAddClickHandler} value={charDetail.id}>add</button>
+              quienes.findIndex(quien => {
+		  return quien.id === charDetail.id
+	      }) !== -1
+		  ? <button className="btn btn-warning" onClick={onRemoveClickHandler} value={charDetail.id}>remove</button>
+	      : <button className="btn btn-success" onClick={onAddClickHandler} value={charDetail.id}>add</button>
           }
           
           
