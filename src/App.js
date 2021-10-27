@@ -1,23 +1,24 @@
-import "./App.css";
-import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import './_App.scss';
 
-import HomeView from "./Views/HomeView";
-import CharacterView from "./Views/CharacterView";
-import ComicsView from "./Views/ComicsView";
-import SearchResults from "./Views/SearchResults";
-import CharacterDetailView from "./Views/CharacterDetailView";
-import ComicDetailView from "./Views/ComicDetailView";
-import StoryDetailedView from "./Views/StoryDetailedView";
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
-import Navbar from "./Components/Sections/Navbar";
-import SearchBar from "./Components/Sections/SearchBar";
-import MyList from "./Views/MyList";
+import HomeView from './Views/HomeView';
+import CharacterView from './Views/CharacterView';
+import ComicsView from './Views/ComicsView';
+import SearchResults from './Views/SearchResults';
+import CharacterDetailView from './Views/CharacterDetailView';
+import ComicDetailView from './Views/ComicDetailView';
+import StoryDetailedView from './Views/StoryDetailedView';
+
+import Navbar from './Components/Sections/Navbar';
+import SearchBar from './Components/Sections/SearchBar';
+import MyList from './Views/MyList';
 
 function App() {
   return (
     <div className="App container">
-      <Navbar brand={"Marvel"} />
+      <Navbar brand={'Marvel'} />
       <SearchBar />
 
       <Switch>

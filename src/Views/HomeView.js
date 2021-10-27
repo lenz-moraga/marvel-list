@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import HomeSection from '../Components/Sections/HomeSection';
 
 const HomeView = () => {
-
   return (
-    <>        
-        <HomeSection sectionType="charactersSection" buttonType="characterViewAll" viewMoreValue="Characters"/>
-        <HomeSection sectionType="comicsSection" buttonType="comicViewAll" viewMoreValue="Comics"/>
-    </>
+    <Fragment>
+      <HomeSection
+        forSection="characterView"
+        type="character"
+        buttonType="characterViewAll"
+        viewMoreValue="Characters"
+      />
+      <HomeSection
+        forSection="comicView"
+        type="comic"
+        buttonType="comicViewAll"
+        viewMoreValue="Comics"
+      />
+    </Fragment>
   );
-}
+};
 
 export default HomeView;

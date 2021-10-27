@@ -7,15 +7,15 @@ import { Link } from "react-router-dom";
 import DetailedInfoSection from "../Components/Sections/DetailedInfoSection";
 
 const CharacterDetailView = () => {
-    const { charId } = useParams();
-    const [charDetail, setCharDetail] = useState({});
-    const [charUrl, setCharUrl] = useState([]);
-    const [charStories, setCharStories] = useState([]);
-    const [charComics, setCharComics] = useState([]);
-    const saved = localStorage.getItem("items");
-    const initialValue = JSON.parse(saved);
-    const [quienes, setQuienes] = useState(initialValue || '')
-    const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/characters/${charId}?${process.env.REACT_APP_ROOT_KEY}`;
+  const { charId } = useParams();
+  const [charDetail, setCharDetail] = useState({});
+  const [charUrl, setCharUrl] = useState([]);
+  const [charStories, setCharStories] = useState([]);
+  const [charComics, setCharComics] = useState([]);
+  const saved = localStorage.getItem("items");
+  const initialValue = JSON.parse(saved);
+  const [quienes, setQuienes] = useState(initialValue || "");
+  const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/characters/${charId}?${process.env.REACT_APP_ROOT_KEY}`;
 
   useEffect(() => {
     axios
@@ -30,12 +30,11 @@ const CharacterDetailView = () => {
       .catch(function (error) {
         console.log(error);
       });
-
   }, [endPointUrl]);
 
-    useEffect(()=> {
-	quienes && localStorage.setItem("items", JSON.stringify(quienes));
-    },[quienes]);
+  useEffect(() => {
+    quienes && localStorage.setItem("items", JSON.stringify(quienes));
+  }, [quienes]);
 
   const renderImage = () => {
     return Object.entries(charDetail).length === 0 ? (
@@ -54,16 +53,18 @@ const CharacterDetailView = () => {
   };
 
   const onAddClickHandler = () => {
-    return setQuienes((prevState) => [charDetail, ...prevState] );
+    return setQuienes((prevState) => [charDetail, ...prevState]);
   };
 
   const onRemoveClickHandler = (evt) => {
-      let  {target: {value}} = evt;
-      value = parseInt(value)
-      // console.log(quienes.filter( quien => { return parseInt(quien.id) !== value } ));
-      if (Array.isArray(quienes)) {
-	  setQuienes(quienes.filter(quien => quien.id !== value))
-      }
+    let {
+      target: { value },
+    } = evt;
+    value = parseInt(value);
+    // console.log(quienes.filter( quien => { return parseInt(quien.id) !== value } ));
+    if (Array.isArray(quienes)) {
+      setQuienes(quienes.filter((quien) => quien.id !== value));
+    }
   };
 
   const renderCharInformation = () => {
@@ -71,15 +72,25 @@ const CharacterDetailView = () => {
       <>
         <h3>
           {charDetail.name}{" "}
-          {
-              quienes.findIndex(quien => {
-		  return quien.id === charDetail.id
-	      }) !== -1
-		  ? <button className="btn btn-warning" onClick={onRemoveClickHandler} value={charDetail.id}>remove</button>
-	      : <button className="btn btn-success" onClick={onAddClickHandler} value={charDetail.id}>add</button>
-          }
-          
-          
+          {quienes.findIndex((quien) => {
+            return quien.id === charDetail.id;
+          }) !== -1 ? (
+            <button
+              className="btn btn-warning"
+              onClick={onRemoveClickHandler}
+              value={charDetail.id}
+            >
+              remove
+            </button>
+          ) : (
+            <button
+              className="btn btn-success"
+              onClick={onAddClickHandler}
+              value={charDetail.id}
+            >
+              add
+            </button>
+          )}
         </h3>
         <p className="text-start">
           {charDetail.description === ""
@@ -99,12 +110,10 @@ const CharacterDetailView = () => {
         </div>
 
         <div>
-          <ul>
-            <h4 className="mt-4">
-              Learn more about this Character in the following links
-            </h4>
-            {renderCharWikiLinks()}
-          </ul>
+          <h4 className="mt-4">
+            Learn more about this Character in the following links
+          </h4>
+          <ul className="wiki-links">{renderCharWikiLinks()}</ul>
         </div>
       </>
     );
@@ -113,7 +122,8 @@ const CharacterDetailView = () => {
   const renderCharWikiLinks = () => {
     return charUrl.map((url) => {
       return (
-        <span
+        <li>
+          <span
           className="badge rounded-pill bg-primary m-1 p-2 text-capitalize"
           key={url.type}
         >
@@ -126,6 +136,7 @@ const CharacterDetailView = () => {
             {url.type}
           </Link>
         </span>
+        </li>
       );
     });
   };

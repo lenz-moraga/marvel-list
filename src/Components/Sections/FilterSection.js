@@ -7,15 +7,11 @@ const FilterSection = (props) => {
     let filteredList = Object.values(props.filterData);
 
     if (props.filterGroup !== "Search Type") {
-      filteredList = Object.values(props.filterData).reduce(
-        (acc, curr) => {
-          return acc.some((s) => s.resourceURI === curr.resourceURI) ||
-            !curr.name
-            ? acc
-            : [...acc, curr];
-        },
-        []
-      );
+      filteredList = Object.values(props.filterData).reduce((acc, curr) => {
+        return acc.some((s) => s.resourceURI === curr.resourceURI) || !curr.name
+          ? acc
+          : [...acc, curr];
+      }, []);
     }
 
     return filteredList.map((val) => {
@@ -53,7 +49,7 @@ const FilterSection = (props) => {
           value="all"
           id={props.filterGroup}
           onChange={props.onFilterChange}
-          checked={props.selectedRadioButton === 'all'}
+          checked={props.selectedRadioButton === "all"}
         />
         <label
           className="form-check-label text-capitalize"

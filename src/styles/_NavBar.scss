@@ -1,0 +1,14 @@
+nav {
+    .navbar-nav {
+        .nav-item {
+            .nav-link {
+                color: $LIGHT-GRAY;
+
+                &.active {
+                    color: $LIGHT-GRAY;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

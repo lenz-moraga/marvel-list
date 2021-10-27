@@ -6,15 +6,28 @@ const DetailedInfoSection = (props) => {
   const STORIES_URL_TYPE = "/stories/";
   const CHARACTERS_URL_TYPE = "/characters/";
 
+  const getBadgeUrl = (url) => {
+    let badgeUrl = "";
+    switch (url) {
+      case url.includes(COMIC_URL_TYPE):
+        badgeUrl = `${COMIC_URL_TYPE}${url.split(COMIC_URL_TYPE)[1]}`;
+        break;
+      case url.includes(STORIES_URL_TYPE):
+        badgeUrl = `${STORIES_URL_TYPE}${url.split(STORIES_URL_TYPE)[1]}`;
+        break;
+      case url.includes(CHARACTERS_URL_TYPE):
+        badgeUrl = `${CHARACTERS_URL_TYPE}${url.split(CHARACTERS_URL_TYPE)[1]}`;
+        break;
+      default:
+        break;
+    }
+
+    return badgeUrl;
+  };
+
   const renderBadges = () => {
     return props.information.slice(0, 10).map((badge) => {
-      const badgeUrl = badge.resourceURI.includes(COMIC_URL_TYPE)
-        ? `${COMIC_URL_TYPE}${badge.resourceURI.split(COMIC_URL_TYPE)[1]}`
-        : badge.resourceURI.includes(STORIES_URL_TYPE)
-        ? `${STORIES_URL_TYPE}${badge.resourceURI.split(STORIES_URL_TYPE)[1]}`
-        : `${CHARACTERS_URL_TYPE}${
-            badge.resourceURI.split(CHARACTERS_URL_TYPE)[1]
-          }`;
+      const badgeUrl = getBadgeUrl(badge.resourceURI);
 
       return (
         <span

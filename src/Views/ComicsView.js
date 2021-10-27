@@ -1,44 +1,59 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import axios from 'axios';
+import React, { Fragment, useEffect, useState, useCallback } from 'react';
 
-import Cards from "../Components/Cards/Cards";
+import Cards from '../Components/Cards/Cards';
 
 const ComicsView = () => {
   const [cardInformation, setCardInformation] = useState([]);
-  const getComicsUrl = `${process.env.REACT_APP_ROOT_URL}/comics?${process.env.REACT_APP_ROOT_KEY}`;
+  const ROOT = process.env.REACT_APP_ROOT_URL;
+  const KEY = process.env.REACT_APP_ROOT_KEY;
+  const SECTION = 'comicView';
+
+  const getComicsUrl = `${ROOT}/comics?${KEY}`;
+
+  const getCardInfo = (from, cardData) => {
+    const { id, name, title, description, stories, thumbnail, urls } = cardData;
+    return {
+      id,
+      stories,
+      thumbnail,
+      from,
+      name: name || title,
+      desc: description,
+      url: urls,
+    };
+  };
+
+  const getAxiosResponse = useCallback(
+    async (endPointUrl) => {
+      return axios
+        .get(endPointUrl)
+        .then((res) => {
+          const transformedObject = res.data.data.results.map((cardData) => {
+            return getCardInfo(SECTION, cardData);
+          });
+          setCardInformation(transformedObject);
+        })
+        .catch((error) => console.log(error));
+    },
+    [SECTION]
+  );
 
   useEffect(() => {
-    axios
-      .get(getComicsUrl)
-      .then((res) => {
-        const transformedObject = res.data.data.results.map((cardData) => {
-          return {
-            id: cardData.id,
-            name: cardData.title,
-            desc: cardData.description,
-            stories: cardData.stories,
-            thumbnail: cardData.thumbnail,
-            url: cardData.urls,
-            from: "comicView",
-            type: "comic",
-          };
-        });
-        setCardInformation(transformedObject);
-      })
-      .catch((error) => console.log(error));
-  }, [getComicsUrl]);
+    getAxiosResponse(getComicsUrl);
+  }, [getComicsUrl, getAxiosResponse]);
 
   const renderCards = () => {
     return cardInformation.map((char) => (
-      <Cards values={char} key={char.id} from="comicView" />
+      <Cards values={char} key={char.id} from={SECTION} />
     ));
   };
 
   return (
-    <>
-      <h2 className="my-4">Comics View</h2>
+    <Fragment>
+      <h2 className="my-4">Comics</h2>
       <div className="row row-cols-1 row-cols-md-3 g-4">{renderCards()}</div>
-    </>
+    </Fragment>
   );
 };
 

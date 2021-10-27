@@ -1,55 +1,57 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import Cards from "../Cards/Cards";
-import Button from "../Buttons/Button";
-
-const CHARACTER_SECTION_TYPE = "charactersSection";
-const COMIC_SECTION_TYPE = "comicsSection";
-const rootUrl = process.env.REACT_APP_ROOT_URL;
-const key = process.env.REACT_APP_ROOT_KEY;
-const getCharactersUrl = `${rootUrl}/characters?${key}`;
-const getComicsUrl = `${rootUrl}/comics?${key}`;
+import axios from 'axios';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import Cards from '../Cards/Cards';
+import Button from '../Buttons/Button';
 
 const HomeSection = (props) => {
-  const [cardInformation, setCardInformation] = useState([]);
+  const CHARACTER_SECTION_TYPE = 'characterView';
+  const COMIC_SECTION_TYPE = 'comicView';
+  const rootUrl = process.env.REACT_APP_ROOT_URL;
+  const key = process.env.REACT_APP_ROOT_KEY;
 
-  const getCharacterInfo = (from, type, cardData) => {
+  const getCharactersUrl = `${rootUrl}/characters?${key}`;
+  const getComicsUrl = `${rootUrl}/comics?${key}`;
+
+  const [cardInformation, setCardInformation] = useState([]);
+  const { forSection, type, viewMoreValue, buttonType } = props;
+
+  const getCardInfo = (from, type, cardData) => {
     const { id, name, title, description, stories, thumbnail, urls } = cardData;
     return {
       id,
-      name: name || title,
-      desc: description,
       stories,
       thumbnail,
-      url: urls,
       from,
       type,
+      name: name || title,
+      desc: description,
+      url: urls,
     };
   };
 
+  const getAxiosResponse = useCallback(
+    async (endPointUrl) => {
+      return axios
+        .get(endPointUrl)
+        .then((res) => {
+          const transformedObject = res.data.data.results.map((cardData) => {
+            return getCardInfo(forSection, type, cardData);
+          });
+          setCardInformation(transformedObject);
+        })
+        .catch((error) => console.log(error));
+    },
+    [forSection, type]
+  );
+
   useEffect(() => {
-    if (props.sectionType === CHARACTER_SECTION_TYPE) {
-      axios
-        .get(getCharactersUrl)
-        .then((res) => {
-          const transformedObject = res.data.data.results.map((cardData) => {
-            return getCharacterInfo("characterView", "character", cardData);
-          });
-          setCardInformation(transformedObject);
-        })
-        .catch((error) => console.log(error));
-    } else if (props.sectionType === COMIC_SECTION_TYPE) {
-      axios
-        .get(getComicsUrl)
-        .then((res) => {
-          const transformedObject = res.data.data.results.map((cardData) => {
-            return getCharacterInfo("comicView", "comic", cardData);
-          });
-          setCardInformation(transformedObject);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [getCharactersUrl, getComicsUrl, props.sectionType]);
+    let endPoint = '';
+
+    if (forSection === CHARACTER_SECTION_TYPE) endPoint = getCharactersUrl;
+    else if (forSection === COMIC_SECTION_TYPE) endPoint = getComicsUrl;
+
+    getAxiosResponse(endPoint);
+  }, [getCharactersUrl, getComicsUrl, forSection, getAxiosResponse]);
 
   const renderCards = () => {
     return cardInformation.slice(0, 6).map((char) => {
@@ -58,25 +60,18 @@ const HomeSection = (props) => {
   };
 
   return (
-    <>
-      <h2 className="my-4">{props.viewMoreValue}</h2>
+    <Fragment>
+      <h2 className="my-4">{viewMoreValue}</h2>
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {renderCards()}
         <Button
-          buttonType={props.buttonType}
-          value={`View More ${props.viewMoreValue}`}
+          buttonType={buttonType}
+          value={`View More ${viewMoreValue}`}
           cssClasses="btn btn-primary mx-auto mt-3 mb-5"
         />
       </div>
-    </>
+    </Fragment>
   );
 };
-
-/* {
-    dataArray1.map( (char) => {
-        return <Cards values={char} key={char.id} />
-    })
-    // script to pull from the json default file, if the Response request limit is reached
-} */
 
 export default HomeSection;

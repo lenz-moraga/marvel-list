@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import Button from "../Buttons/Button";
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import Button from '../Buttons/Button';
 
 const SearchBar = () => {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState('');
   let history = useHistory();
   let location = useLocation();  
 
   useEffect(() => {
     const resetSearchInput = () => {
-      if (!location.pathname.includes("/search/")) {
-        setSearchInput("");
+      if (!location.pathname.includes('/search/')) {
+        setSearchInput('');
       }
     }
 
@@ -26,7 +26,7 @@ const SearchBar = () => {
 
   const onSearchHandler = (evt) => {
     evt.preventDefault();
-    history.push(`/search/${searchInput.split("#").join("No.")}`);
+    history.push(`/search/${searchInput.split('#').join('No.')}`);
   };
 
   return (

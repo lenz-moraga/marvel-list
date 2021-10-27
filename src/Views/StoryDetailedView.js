@@ -10,7 +10,10 @@ const StoryDetailedView = () => {
   const [storyDetail, setStoryDetail] = useState({});
   const [storyComics, setStoryComics] = useState([]);
 
-  const endPointUrl = `${process.env.REACT_APP_ROOT_URL}/stories/${storyId}?${process.env.REACT_APP_ROOT_KEY}`;
+  const ROOT = process.env.REACT_APP_ROOT_URL;
+  const KEY = process.env.REACT_APP_ROOT_KEY;
+
+  const endPointUrl = `${ROOT}/stories/${storyId}?${KEY}`;
 
   useEffect(() => {
     axios
