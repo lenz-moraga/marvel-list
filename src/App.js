@@ -7,13 +7,12 @@ import HomeView from './Views/HomeView';
 import CharacterView from './Views/CharacterView';
 import ComicsView from './Views/ComicsView';
 import SearchResults from './Views/SearchResults';
-import CharacterDetailView from './Views/CharacterDetailView';
-import ComicDetailView from './Views/ComicDetailView';
 import StoryDetailedView from './Views/StoryDetailedView';
 
 import Navbar from './Components/Sections/Navbar';
 import SearchBar from './Components/Sections/SearchBar';
 import MyList from './Views/MyList';
+import DetailedView from './Views/DetailedView';
 
 function App() {
   return (
@@ -31,14 +30,14 @@ function App() {
         <Route path="/characters" exact>
           <CharacterView />
         </Route>
-        <Route path="/characters/:charId">
-          <CharacterDetailView />
+        <Route path="/characters/:Id">
+          <DetailedView viewType="/characters/" />
         </Route>
         <Route path="/comics" exact>
           <ComicsView />
         </Route>
-        <Route path="/comics/:comicId">
-          <ComicDetailView />
+        <Route path="/comics/:Id">
+          <DetailedView viewType="/comics/" />
         </Route>
         <Route path="/stories/:storyId">
           <StoryDetailedView />

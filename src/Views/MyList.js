@@ -1,10 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
-import "./MyList.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const MyList = () => {
-  const saved = localStorage.getItem("items");
+  const saved = localStorage.getItem('items');
   const initialValue = JSON.parse(saved);
 
   const noDuplicates = initialValue?.reduce((acc, curr) => {
@@ -16,7 +14,11 @@ const MyList = () => {
       return (
         <li className="myList-Items" key={value.id}>
           {renderImage(index)}
-          <Link to={`/characters/${value.id}`}>{value.name}</Link>
+          <Link
+            to={value.name ? `/characters/${value.id}` : `/comics/${value.id}`}
+          >
+            {value.name || value.title}
+          </Link>
         </li>
       );
     });

@@ -3,6 +3,7 @@
 
 // Components
 @import './styles/_Cards.scss';
+@import './styles/_Button.scss';
 
 //Sections
 @import './styles/_NavBar.scss';
@@ -10,3 +11,5 @@
 // Views
 @import './styles/_HomeView.scss';
 @import './styles/_DetailedView.scss';
+@import './styles/SearchResults';
+@import './styles/MyList';

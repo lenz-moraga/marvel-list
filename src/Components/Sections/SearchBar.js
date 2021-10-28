@@ -44,7 +44,7 @@ const SearchBar = () => {
                 value={searchInput}
               />
               <Button
-                cssClasses="btn btn-outline-success"
+                cssClasses="btn btn-success"
                 searchParameterProp={searchInput}
                 buttonType="search"
                 value="Search"

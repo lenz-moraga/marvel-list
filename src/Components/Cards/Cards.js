@@ -1,6 +1,5 @@
 import React from "react";
 import CardBody from "./CardBody";
-import "../Buttons/Button.css";
 
 const Cards = (props) => {
   const charObject = props.values;

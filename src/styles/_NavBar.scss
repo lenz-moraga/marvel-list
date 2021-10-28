@@ -3,12 +3,19 @@ nav {
         .nav-item {
             .nav-link {
                 color: $LIGHT-GRAY;
+                letter-spacing: 0.5px;
 
                 &.active {
                     color: $LIGHT-GRAY;
                     font-weight: bold;
                 }
             }
+        }
+    }
+
+    img {
+        &.app-logo {
+            width: 100px;
         }
     }
 }

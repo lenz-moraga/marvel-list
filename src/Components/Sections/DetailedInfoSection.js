@@ -1,32 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const DetailedInfoSection = (props) => {
-  const COMIC_URL_TYPE = "/comics/";
-  const STORIES_URL_TYPE = "/stories/";
-  const CHARACTERS_URL_TYPE = "/characters/";
+  const COMIC_URL_TYPE = '/comics/';
+  const STORIES_URL_TYPE = '/stories/';
+  const CHARACTERS_URL_TYPE = '/characters/';
+
+  const { information, sectionName } = props;
 
   const getBadgeUrl = (url) => {
-    let badgeUrl = "";
-    switch (url) {
-      case url.includes(COMIC_URL_TYPE):
-        badgeUrl = `${COMIC_URL_TYPE}${url.split(COMIC_URL_TYPE)[1]}`;
-        break;
-      case url.includes(STORIES_URL_TYPE):
-        badgeUrl = `${STORIES_URL_TYPE}${url.split(STORIES_URL_TYPE)[1]}`;
-        break;
-      case url.includes(CHARACTERS_URL_TYPE):
-        badgeUrl = `${CHARACTERS_URL_TYPE}${url.split(CHARACTERS_URL_TYPE)[1]}`;
-        break;
-      default:
-        break;
+    let badgeUrl = '';
+    if (url.includes(COMIC_URL_TYPE)) {
+      return (badgeUrl = `${COMIC_URL_TYPE}${url.split(COMIC_URL_TYPE)[1]}`);
+    } else if (url.includes(STORIES_URL_TYPE)) {
+      return (badgeUrl = `${STORIES_URL_TYPE}${
+        url.split(STORIES_URL_TYPE)[1]
+      }`);
+    } else if (url.includes(CHARACTERS_URL_TYPE)) {
+      return (badgeUrl = `${CHARACTERS_URL_TYPE}${
+        url.split(CHARACTERS_URL_TYPE)[1]
+      }`);
     }
 
     return badgeUrl;
   };
 
   const renderBadges = () => {
-    return props.information.slice(0, 10).map((badge) => {
+    return information.slice(0, 10).map((badge) => {
       const badgeUrl = getBadgeUrl(badge.resourceURI);
 
       return (
@@ -47,6 +47,7 @@ const DetailedInfoSection = (props) => {
 
   return (
     <>
+      <h3>{sectionName}</h3>
       {renderBadges().length ? renderBadges() : <p> No information found. </p>}
     </>
   );

@@ -1,13 +1,15 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { Fragment } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
-const Navbar = (props) => {
+import logo from '../Images/marvel-logo.png';
+
+const Navbar = () => {
   return (
-    <>
+    <Fragment>
       <nav className="navbar navbar-expand-lg navbar-light my-4">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/home">
-            {props.brand}
+            <img src={logo} alt="marvel logo" className="app-logo"/>
           </Link>
           <button
             className="navbar-toggler"
@@ -55,7 +57,7 @@ const Navbar = (props) => {
                   className="nav-link"
                   to="/my-list"
                 >
-                  My List{" "}
+                  My List{' '}
                   <small>
                     <i className="fas fa-plus"></i>
                   </small>
@@ -65,7 +67,7 @@ const Navbar = (props) => {
           </div>
         </div>
       </nav>
-    </>
+    </Fragment>
   );
 };
 

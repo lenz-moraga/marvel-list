@@ -6,8 +6,6 @@ import FilterSection from "../Components/Sections/FilterSection";
 
 import data from "../Jsons/ConstantObjects.json";
 
-import "./SearchResults.css";
-
 const SearchResults = () => {
   const TYPE_FILTER_DATA = data.constants.TYPE_FILTER_DATA;
   const FORMAT_FILTER_DATA = data.constants.FORMAT_FILTER_DATA;
