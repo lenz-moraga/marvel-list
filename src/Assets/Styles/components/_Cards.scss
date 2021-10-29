@@ -1,29 +1,29 @@
-.card {
+.cards {
   min-height: 450px;
   border-radius: 12px;
-  color: black;
+  color: $BLACK;
 
-  img {
+  &__img {
     height: 180px;
     margin: 0 auto;
     width: 60%;
     object-fit: contain;
   }
 
-  .card-body {
+  &__body {
     display: inline-flex;
     flex-direction: column;
     justify-content: space-around;
     text-align: center;
 
-    .card-title {
+    &-title {
       display: -webkit-inline-box;
       overflow: hidden;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
     }
 
-    .card-text {
+    &-text {
       display: -webkit-inline-box;
       overflow: hidden;
       -webkit-box-orient: vertical;

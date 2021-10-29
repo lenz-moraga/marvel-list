@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 const DetailedInfoSection = (props) => {
@@ -46,10 +46,10 @@ const DetailedInfoSection = (props) => {
   };
 
   return (
-    <>
+    <Fragment>
       <h3>{sectionName}</h3>
       {renderBadges().length ? renderBadges() : <p> No information found. </p>}
-    </>
+    </Fragment>
   );
 };
 

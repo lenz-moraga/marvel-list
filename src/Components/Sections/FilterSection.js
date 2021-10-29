@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const FilterSection = (props) => {
   const renderFilters = () => {
@@ -6,7 +6,7 @@ const FilterSection = (props) => {
 
     let filteredList = Object.values(props.filterData);
 
-    if (props.filterGroup !== "Search Type") {
+    if (props.filterGroup !== 'Search Type') {
       filteredList = Object.values(props.filterData).reduce((acc, curr) => {
         return acc.some((s) => s.resourceURI === curr.resourceURI) || !curr.name
           ? acc
@@ -16,9 +16,9 @@ const FilterSection = (props) => {
 
     return filteredList.map((val) => {
       const id =
-        val.resourceURI.split("/comics/")[1] ||
-        val.resourceURI.split("/stories/")[1] ||
-        val.resourceURI.split("/type/")[1];
+        val.resourceURI.split('/comics/')[1] ||
+        val.resourceURI.split('/stories/')[1] ||
+        val.resourceURI.split('/type/')[1];
 
       return (
         <div className="form-check" key={id}>
@@ -49,7 +49,7 @@ const FilterSection = (props) => {
           value="all"
           id={props.filterGroup}
           onChange={props.onFilterChange}
-          checked={props.selectedRadioButton === "all"}
+          checked={props.selectedRadioButton === 'all'}
         />
         <label
           className="form-check-label text-capitalize"

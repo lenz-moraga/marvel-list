@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../Buttons/Button";
+import Button from "../Button";
 
 const CardBody = (props) => {
   const charObject = props.values;
@@ -9,9 +9,9 @@ const CardBody = (props) => {
   };
 
   return (
-    <div className="card-body">
-      <h5 className="card-title">{charObject.name}</h5>
-      <p className="card-text">{noDescriptionAvailable(charObject.desc)}</p>
+    <div className="card-body cards__body">
+      <h5 className="cards__body-title">{charObject.name}</h5>
+      <p className="cards__body-text">{noDescriptionAvailable(charObject.desc)}</p>
       <Button
         values={charObject}
         buttonType={props.from}

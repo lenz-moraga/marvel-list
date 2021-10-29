@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import DetailedInfoSection from "../Components/Sections/DetailedInfoSection";
@@ -31,7 +31,7 @@ const StoryDetailedView = () => {
 
   const renderCharInformation = () => {
     return (
-      <>
+      <Fragment>
         <h3>{storyDetail.title}</h3>
         <p className="text-start">
           {!storyDetail.description
@@ -49,18 +49,18 @@ const StoryDetailedView = () => {
           <h3>Comics</h3>
           <DetailedInfoSection information={storyComics} />
         </div>
-      </>
+      </Fragment>
     );
   };
 
   return (
-    <>
+    <Fragment>
       <div className="container my-4">
         <div className="row">
           <div className="col-10 offset-1">{renderCharInformation()}</div>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 };
 

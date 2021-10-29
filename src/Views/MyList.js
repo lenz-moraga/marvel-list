@@ -12,7 +12,7 @@ const MyList = () => {
   const renderMyList = () => {
     return noDuplicates.map((value, index) => {
       return (
-        <li className="myList-Items" key={value.id}>
+        <li className="my-list__Items" key={value.id}>
           {renderImage(index)}
           <Link
             to={value.name ? `/characters/${value.id}` : `/comics/${value.id}`}
@@ -28,19 +28,19 @@ const MyList = () => {
     return noDuplicates?.length === 0 ? (
       <img
         src="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
-        className="rounded-circle z-depth-2"
+        className="rounded-circle z-depth-2 my-list__Items-img"
         alt=""
       ></img>
     ) : (
       <img
         src={`${noDuplicates[index].thumbnail.path}.${noDuplicates[index].thumbnail.extension}`}
-        className="rounded-circle z-depth-2"
+        className="rounded-circle z-depth-2 my-list__Items-img"
         alt=""
       ></img>
     );
   };
 
-  return <ul className="fav-list">{renderMyList()}</ul>;
+  return <ul className="fav-list mt-4">{renderMyList()}</ul>;
 };
 
 export default MyList;

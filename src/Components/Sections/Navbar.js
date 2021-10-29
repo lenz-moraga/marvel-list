@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import logo from '../Images/marvel-logo.png';
+import logo from '../../Assets/Images/marvel-logo.png';
 
 const Navbar = () => {
   return (

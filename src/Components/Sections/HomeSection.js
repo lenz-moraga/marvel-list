@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import Cards from '../Cards/Cards';
-import Button from '../Buttons/Button';
+import Button from "../Button";
 
 const HomeSection = (props) => {
   const CHARACTER_SECTION_TYPE = 'characterView';

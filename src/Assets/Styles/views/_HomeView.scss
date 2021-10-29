@@ -1,0 +1,21 @@
+body {
+  background-color: $DARK-GRAY;
+  color: $LIGHT-GRAY;
+  font-family: $FONT-FAMILY;
+
+  ::-moz-selection {
+    color: $LIGHT-GRAY;
+    background: $MARVEL-RED;
+  }
+
+  ::selection {
+    color: $LIGHT-GRAY;
+    background: $MARVEL-RED;
+  }
+
+  .App.container {
+    h2 {
+      text-align: center;
+    }
+  }
+}

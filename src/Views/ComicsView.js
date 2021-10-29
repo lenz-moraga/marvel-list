@@ -4,10 +4,12 @@ import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import Cards from '../Components/Cards/Cards';
 
 const ComicsView = () => {
-  const [cardInformation, setCardInformation] = useState([]);
+  const SECTION = 'comicView';
   const ROOT = process.env.REACT_APP_ROOT_URL;
   const KEY = process.env.REACT_APP_ROOT_KEY;
-  const SECTION = 'comicView';
+
+  const [cardInformation, setCardInformation] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getComicsUrl = `${ROOT}/comics?${KEY}`;
 
@@ -34,16 +36,21 @@ const ComicsView = () => {
           });
           setCardInformation(transformedObject);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error))
+        .finally(() => {
+          setIsLoading(false);
+        });
     },
     [SECTION]
   );
 
   useEffect(() => {
+    setIsLoading(true);
     getAxiosResponse(getComicsUrl);
-  }, [getComicsUrl, getAxiosResponse]);
+  }, [getAxiosResponse, getComicsUrl]);
 
   const renderCards = () => {
+    if (isLoading) return <p>Loading...</p>;
     return cardInformation.map((char) => (
       <Cards values={char} key={char.id} from={SECTION} />
     ));

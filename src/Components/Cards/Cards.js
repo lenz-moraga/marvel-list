@@ -8,10 +8,10 @@ const Cards = (props) => {
   return (
     <React.Fragment>
       <div className="col">
-        <div className="card pt-3">
+        <div className="card cards pt-3">
           <img
             src={`${charObject.thumbnail.path}.${charObject.thumbnail.extension}`}
-            className="card-img-top"
+            className="card-img-top cards__img"
             alt="..."
           ></img>
           <CardBody values={charObject} from={buttonFrom} />

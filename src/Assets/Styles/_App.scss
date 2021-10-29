@@ -1,0 +1,16 @@
+// Variables
+@import './base/_Fonts.scss';
+@import './base/_Variables.scss';
+
+// Components
+@import './components/_Cards.scss';
+@import './components/_Button.scss';
+
+//Sections
+@import './sections/_NavBar.scss';
+
+// Views
+@import './views/_HomeView.scss';
+@import './views/_DetailedView.scss';
+@import './views/_SearchResults.scss';
+@import './views/_MyList.scss';
