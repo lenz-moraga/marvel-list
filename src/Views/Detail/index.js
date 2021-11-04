@@ -2,9 +2,9 @@ import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-import DetailedInfoSection from '../Components/Sections/DetailedInfoSection';
-import ImageSection from '../Components/Sections/ImageSection';
-import WikiLinkSection from '../Components/Sections/WikiLinkSection';
+import DetailedInfoSection from '../../Sections/DetailedInformation';
+import ImageSection from '../../Sections/Image';
+import WikiLinkSection from '../../Sections/WikiLinks';
 
 const DetailedView = (props) => {
   const { Id } = useParams();
@@ -145,7 +145,7 @@ const DetailedView = (props) => {
 
   return (
     <Fragment>
-      <div className="container my-4">
+      <div className="container my-4 detailView">
         <div className="row">
           <div className="col-4">
             <ImageSection

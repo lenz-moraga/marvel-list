@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import HomeSection from '../Components/Sections/HomeSection';
+import HomeSection from '../../Sections/Home';
 
 const HomeView = () => {
   return (

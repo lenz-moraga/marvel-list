@@ -1,16 +1,18 @@
-.detail-image {
+.detailView {
+  .detail-image {
     height: 500px;
     margin: 0 auto;
     width: 100%;
     object-fit: contain;
-}
+  }
 
-.wiki-links {
+  .detail-wiki-list {
     padding: 0px;
     display: flex;
     list-style: none;
-}
+  }
 
-.badge {
+  .detail-badge {
     letter-spacing: 1px;
+  }
 }

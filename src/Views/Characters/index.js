@@ -1,17 +1,15 @@
 import axios from 'axios';
 import React, { Fragment, useEffect, useState, useCallback } from 'react';
 
-import Cards from '../Components/Cards/Cards';
+import Cards from '../../Components/Cards';
 
-const ComicsView = () => {
-  const SECTION = 'comicView';
+const CharacterView = () => {
+  const [cardInformation, setCardInformation] = useState([]);
   const ROOT = process.env.REACT_APP_ROOT_URL;
   const KEY = process.env.REACT_APP_ROOT_KEY;
+  const SECTION = 'characterView';
 
-  const [cardInformation, setCardInformation] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const getComicsUrl = `${ROOT}/comics?${KEY}`;
+  const getCharactersUrl = `${ROOT}/characters?${KEY}`;
 
   const getCardInfo = (from, cardData) => {
     const { id, name, title, description, stories, thumbnail, urls } = cardData;
@@ -36,21 +34,16 @@ const ComicsView = () => {
           });
           setCardInformation(transformedObject);
         })
-        .catch((error) => console.log(error))
-        .finally(() => {
-          setIsLoading(false);
-        });
+        .catch((error) => console.log(error));
     },
     [SECTION]
   );
 
   useEffect(() => {
-    setIsLoading(true);
-    getAxiosResponse(getComicsUrl);
-  }, [getAxiosResponse, getComicsUrl]);
+    getAxiosResponse(getCharactersUrl);
+  }, [getCharactersUrl, getAxiosResponse]);
 
-  const renderCards = () => {
-    if (isLoading) return <p>Loading...</p>;
+  const renderCharacterCards = () => {
     return cardInformation.map((char) => (
       <Cards values={char} key={char.id} from={SECTION} />
     ));
@@ -58,10 +51,12 @@ const ComicsView = () => {
 
   return (
     <Fragment>
-      <h2 className="my-4">Comics</h2>
-      <div className="row row-cols-1 row-cols-md-3 g-4">{renderCards()}</div>
+      <h2 className="my-4">Characters</h2>
+      <div className="row row-cols-1 row-cols-md-3 g-4">
+        {renderCharacterCards()}
+      </div>
     </Fragment>
   );
 };
 
-export default ComicsView;
+export default CharacterView;

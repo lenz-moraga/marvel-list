@@ -1,21 +1,21 @@
-nav {
-    .navbar-nav {
-        .nav-item {
-            .nav-link {
-                color: $LIGHT-GRAY;
-                letter-spacing: 0.5px;
+.navigation-bar {
+  .navigation-list {
+    .navigation-items {
+      .navigation-links {
+        color: $LIGHT-GRAY;
+        letter-spacing: 0.5px;
 
-                &.active {
-                    color: $LIGHT-GRAY;
-                    font-weight: bold;
-                }
-            }
+        &.active {
+          color: $LIGHT-GRAY;
+          font-weight: bold;
         }
+      }
     }
+  }
 
-    img {
-        &.app-logo {
-            width: 100px;
-        }
+  .application-logo {
+    &.app-logo {
+      width: 100px;
     }
+  }
 }

@@ -10,7 +10,7 @@ const WikiLinkSection = (props) => {
         <li 
         key={url.type}>
           <span
-            className="badge rounded-pill bg-primary m-1 p-2 text-capitalize"
+            className="badge detail-badge rounded-pill bg-primary m-1 p-2 text-capitalize"
           >
             <Link
               to={{ pathname: url.url }}
@@ -31,7 +31,7 @@ const WikiLinkSection = (props) => {
       <h4 className="mt-4">
         Learn more about this Character in the following links
       </h4>
-      <ul className="wiki-links">{renderCharWikiLinks()}</ul>
+      <ul className="detail-wiki-list">{renderCharWikiLinks()}</ul>
     </Fragment>
   );
 };

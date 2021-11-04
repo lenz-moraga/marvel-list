@@ -3,21 +3,21 @@ import './Assets/Styles/_App.scss';
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import HomeView from './Views/HomeView';
-import CharacterView from './Views/CharacterView';
-import ComicsView from './Views/ComicsView';
+import HomeView from './Views/Home';
+import CharacterView from './Views/Characters';
+import ComicsView from './Views/Comics';
 import SearchResults from './Views/SearchResults';
-import StoryDetailedView from './Views/StoryDetailedView';
+import StoryDetailedView from './Views/Story';
 
-import Navbar from './Components/Sections/Navbar';
-import SearchBar from './Components/Sections/SearchBar';
+import NavigationBar from './Sections/NavigationBar';
+import SearchBar from './Sections/SearchBar';
 import MyList from './Views/MyList';
-import DetailedView from './Views/DetailedView';
+import DetailedView from './Views/Detail';
 
 function App() {
   return (
     <div className="App container">
-      <Navbar brand={'Marvel'} />
+      <NavigationBar brand={'Marvel'} />
       <SearchBar />
 
       <Switch>

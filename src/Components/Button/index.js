@@ -54,6 +54,10 @@ Button.propTypes = {
   values: PropTypes.shape({
     id: PropTypes.number.isRequired,
   }),
+  value: PropTypes.string,
+  buttonType: PropTypes.string,
+  cssClasses: PropTypes.string,
+  isSubmit: PropTypes.string
 };
 
 export default Button;

@@ -31,7 +31,7 @@ const DetailedInfoSection = (props) => {
 
       return (
         <span
-          className="badge rounded-pill bg-primary m-1 p-2"
+          className="badge detail-badge rounded-pill bg-primary m-1 p-2"
           key={badge.resourceURI}
         >
           <Link

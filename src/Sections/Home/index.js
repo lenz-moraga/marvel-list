@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import Cards from '../Cards/Cards';
-import Button from "../Button";
+import Cards from '../../Components/Cards';
+import Button from "../../Components/Button";
 
 const HomeSection = (props) => {
   const CHARACTER_SECTION_TYPE = 'characterView';
@@ -61,7 +61,7 @@ const HomeSection = (props) => {
 
   return (
     <Fragment>
-      <h2 className="my-4">{viewMoreValue}</h2>
+      <h2 className="home-section-title my-4">{viewMoreValue}</h2>
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {renderCards()}
         <Button

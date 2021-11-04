@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Cards from '../Components/Cards/Cards';
-import FilterSection from '../Components/Sections/FilterSection';
+import Cards from '../../Components/Cards';
+import FilterSection from '../../Sections/FilterLists';
 
-import data from '../Assets/Jsons/ConstantObjects.json';
+import data from '../../Assets/Jsons/ConstantObjects.json';
 
 const SearchResults = () => {
   const TYPE_FILTER_DATA = data.constants.TYPE_FILTER_DATA;
@@ -228,7 +228,7 @@ const SearchResults = () => {
                   selectedRadioButton={searchType}
                   onFilterChange={onChangeSearchType}
                 />
-                <hr />
+                <hr className="filter-divider"/>
               </div>
               <div className="mt-4">
                 <h3>Stories</h3>
@@ -239,7 +239,7 @@ const SearchResults = () => {
                   selectedRadioButton={storyId}
                   onFilterChange={onChangeStoryName}
                 />
-                <hr />
+                <hr className="filter-divider"/>
               </div>
               <div className="mt-4">
                 <h3>Comics</h3>
@@ -250,7 +250,7 @@ const SearchResults = () => {
                   selectedRadioButton={comicId}
                   onFilterChange={onChangeComicsName}
                 />
-                <hr />
+                <hr className="filter-divider"/>
               </div>
               {
                 <div className="mt-4">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import Button from "../Button";
+import Button from "../../Components/Button";
 
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');

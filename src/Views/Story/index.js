@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import axios from 'axios';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import DetailedInfoSection from "../Components/Sections/DetailedInfoSection";
+import DetailedInfoSection from '../../Sections/DetailedInformation';
 
 const StoryDetailedView = () => {
   const { storyId } = useParams();
@@ -36,7 +36,7 @@ const StoryDetailedView = () => {
         <p className="text-start">
           {!storyDetail.description
             ? (storyDetail.description =
-                "There is no description available for this character, visit the links below for more information...")
+                'There is no description available for this character, visit the links below for more information...')
             : storyDetail.description}
         </p>
 

@@ -5,7 +5,11 @@ const ImageSection = (props) => {
 
   const renderImage = () => {
     return (
-      <img src={`${path}.${extension}`} className="img-thumbnail detail-image" alt={name}></img>
+      <img
+        src={`${path}.${extension}`}
+        className="img-thumbnail detail-image"
+        alt={name}
+      ></img>
     );
   };
 
